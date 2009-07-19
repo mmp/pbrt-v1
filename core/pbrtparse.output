@@ -1,0 +1,1333 @@
+Terminals which are not used:
+
+   ID
+
+
+Grammar
+
+  Number, Line, Rule
+    1 144 start -> ri_stmt_list
+    2 148 array_init -> /* empty */
+    3 158 string_array_init -> /* empty */
+    4 163 num_array_init -> /* empty */
+    5 168 array -> string_array
+    6 172 array -> num_array
+    7 177 string_array -> real_string_array
+    8 181 string_array -> single_element_string_array
+    9 187 real_string_array -> array_init LBRACK string_list RBRACK
+   10 192 single_element_string_array -> array_init string_list_entry
+   11 196 string_list -> string_list string_list_entry
+   12 199 string_list -> string_list_entry
+   13 203 string_list_entry -> string_array_init STRING
+   14 209 num_array -> real_num_array
+   15 213 num_array -> single_element_num_array
+   16 218 real_num_array -> array_init LBRACK num_list RBRACK
+   17 223 single_element_num_array -> array_init num_list_entry
+   18 227 num_list -> num_list num_list_entry
+   19 230 num_list -> num_list_entry
+   20 234 num_list_entry -> num_array_init NUM
+   21 240 paramlist -> paramlist_init paramlist_contents
+   22 244 paramlist_init -> /* empty */
+   23 249 paramlist_contents -> paramlist_entry paramlist_contents
+   24 252 paramlist_contents -> /* empty */
+   25 256 paramlist_entry -> STRING array
+   26 274 ri_stmt_list -> ri_stmt_list ri_stmt
+   27 277 ri_stmt_list -> ri_stmt
+   28 281 ri_stmt -> ACCELERATOR STRING paramlist
+   29 288 ri_stmt -> AREALIGHTSOURCE STRING paramlist
+   30 295 ri_stmt -> ATTRIBUTEBEGIN
+   31 299 ri_stmt -> ATTRIBUTEEND
+   32 303 ri_stmt -> CAMERA STRING paramlist
+   33 310 ri_stmt -> CONCATTRANSFORM num_array
+   34 316 ri_stmt -> COORDINATESYSTEM STRING
+   35 320 ri_stmt -> COORDSYSTRANSFORM STRING
+   36 324 ri_stmt -> FILM STRING paramlist
+   37 331 ri_stmt -> IDENTITY
+   38 335 ri_stmt -> LIGHTSOURCE STRING paramlist
+   39 342 ri_stmt -> LOOKAT NUM NUM NUM NUM NUM NUM NUM NUM NUM
+   40 346 ri_stmt -> MATERIAL STRING paramlist
+   41 353 ri_stmt -> OBJECTBEGIN STRING
+   42 357 ri_stmt -> OBJECTEND
+   43 361 ri_stmt -> OBJECTINSTANCE STRING
+   44 365 ri_stmt -> PIXELFILTER STRING paramlist
+   45 372 ri_stmt -> REVERSEORIENTATION
+   46 376 ri_stmt -> ROTATE NUM NUM NUM NUM
+   47 380 ri_stmt -> SAMPLER STRING paramlist
+   48 387 ri_stmt -> SCALE NUM NUM NUM
+   49 391 ri_stmt -> SEARCHPATH STRING
+   50 395 ri_stmt -> SHAPE STRING paramlist
+   51 402 ri_stmt -> SURFACEINTEGRATOR STRING paramlist
+   52 409 ri_stmt -> TEXTURE STRING STRING STRING paramlist
+   53 416 ri_stmt -> TRANSFORMBEGIN
+   54 420 ri_stmt -> TRANSFORMEND
+   55 424 ri_stmt -> TRANSFORM real_num_array
+   56 430 ri_stmt -> TRANSLATE NUM NUM NUM
+   57 434 ri_stmt -> VOLUMEINTEGRATOR STRING paramlist
+   58 441 ri_stmt -> VOLUME STRING paramlist
+   59 448 ri_stmt -> WORLDBEGIN
+   60 452 ri_stmt -> WORLDEND
+
+
+Terminals, with rules where they appear
+
+$ (-1)
+error (256)
+STRING (257) 13 25 28 29 32 34 35 36 38 40 41 43 44 47 49 50 51 52
+    57 58
+ID (258)
+NUM (259) 20 39 46 48 56
+LBRACK (260) 9 16
+RBRACK (261) 9 16
+ACCELERATOR (262) 28
+AREALIGHTSOURCE (263) 29
+ATTRIBUTEBEGIN (264) 30
+ATTRIBUTEEND (265) 31
+CAMERA (266) 32
+CONCATTRANSFORM (267) 33
+COORDINATESYSTEM (268) 34
+COORDSYSTRANSFORM (269) 35
+FILM (270) 36
+IDENTITY (271) 37
+LIGHTSOURCE (272) 38
+LOOKAT (273) 39
+MATERIAL (274) 40
+OBJECTBEGIN (275) 41
+OBJECTEND (276) 42
+OBJECTINSTANCE (277) 43
+PIXELFILTER (278) 44
+REVERSEORIENTATION (279) 45
+ROTATE (280) 46
+SAMPLER (281) 47
+SCALE (282) 48
+SEARCHPATH (283) 49
+SHAPE (284) 50
+SURFACEINTEGRATOR (285) 51
+TEXTURE (286) 52
+TRANSFORMBEGIN (287) 53
+TRANSFORMEND (288) 54
+TRANSFORM (289) 55
+TRANSLATE (290) 56
+VOLUME (291) 58
+VOLUMEINTEGRATOR (292) 57
+WORLDBEGIN (293) 59
+WORLDEND (294) 60
+HIGH_PRECEDENCE (295)
+
+
+Nonterminals, with rules where they appear
+
+start (42)
+    on left: 1
+array_init (43)
+    on left: 2, on right: 9 10 16 17
+string_array_init (44)
+    on left: 3, on right: 13
+num_array_init (45)
+    on left: 4, on right: 20
+array (46)
+    on left: 5 6, on right: 25
+string_array (47)
+    on left: 7 8, on right: 5
+real_string_array (48)
+    on left: 9, on right: 7
+single_element_string_array (49)
+    on left: 10, on right: 8
+string_list (50)
+    on left: 11 12, on right: 9 11
+string_list_entry (51)
+    on left: 13, on right: 10 11 12
+num_array (52)
+    on left: 14 15, on right: 6 33
+real_num_array (53)
+    on left: 16, on right: 14 55
+single_element_num_array (54)
+    on left: 17, on right: 15
+num_list (55)
+    on left: 18 19, on right: 16 18
+num_list_entry (56)
+    on left: 20, on right: 17 18 19
+paramlist (57)
+    on left: 21, on right: 28 29 32 36 38 40 44 47 50 51 52 57 58
+paramlist_init (58)
+    on left: 22, on right: 21
+paramlist_contents (59)
+    on left: 23 24, on right: 21 23
+paramlist_entry (60)
+    on left: 25, on right: 23
+ri_stmt_list (61)
+    on left: 26 27, on right: 1 26
+ri_stmt (62)
+    on left: 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45
+    46 47 48 49 50 51 52 53 54 55 56 57 58 59 60, on right: 26 27
+
+
+state 0
+
+    ACCELERATOR	shift, and go to state 1
+    AREALIGHTSOURCE	shift, and go to state 2
+    ATTRIBUTEBEGIN	shift, and go to state 3
+    ATTRIBUTEEND	shift, and go to state 4
+    CAMERA	shift, and go to state 5
+    CONCATTRANSFORM	shift, and go to state 6
+    COORDINATESYSTEM	shift, and go to state 7
+    COORDSYSTRANSFORM	shift, and go to state 8
+    FILM	shift, and go to state 9
+    IDENTITY	shift, and go to state 10
+    LIGHTSOURCE	shift, and go to state 11
+    LOOKAT	shift, and go to state 12
+    MATERIAL	shift, and go to state 13
+    OBJECTBEGIN	shift, and go to state 14
+    OBJECTEND	shift, and go to state 15
+    OBJECTINSTANCE	shift, and go to state 16
+    PIXELFILTER	shift, and go to state 17
+    REVERSEORIENTATION	shift, and go to state 18
+    ROTATE	shift, and go to state 19
+    SAMPLER	shift, and go to state 20
+    SCALE	shift, and go to state 21
+    SEARCHPATH	shift, and go to state 22
+    SHAPE	shift, and go to state 23
+    SURFACEINTEGRATOR	shift, and go to state 24
+    TEXTURE	shift, and go to state 25
+    TRANSFORMBEGIN	shift, and go to state 26
+    TRANSFORMEND	shift, and go to state 27
+    TRANSFORM	shift, and go to state 28
+    TRANSLATE	shift, and go to state 29
+    VOLUME	shift, and go to state 30
+    VOLUMEINTEGRATOR	shift, and go to state 31
+    WORLDBEGIN	shift, and go to state 32
+    WORLDEND	shift, and go to state 33
+
+    start	go to state 122
+    ri_stmt_list	go to state 34
+    ri_stmt	go to state 35
+
+
+
+state 1
+
+    ri_stmt  ->  ACCELERATOR . STRING paramlist   (rule 28)
+
+    STRING	shift, and go to state 36
+
+
+
+state 2
+
+    ri_stmt  ->  AREALIGHTSOURCE . STRING paramlist   (rule 29)
+
+    STRING	shift, and go to state 37
+
+
+
+state 3
+
+    ri_stmt  ->  ATTRIBUTEBEGIN .   (rule 30)
+
+    $default	reduce using rule 30 (ri_stmt)
+
+
+
+state 4
+
+    ri_stmt  ->  ATTRIBUTEEND .   (rule 31)
+
+    $default	reduce using rule 31 (ri_stmt)
+
+
+
+state 5
+
+    ri_stmt  ->  CAMERA . STRING paramlist   (rule 32)
+
+    STRING	shift, and go to state 38
+
+
+
+state 6
+
+    ri_stmt  ->  CONCATTRANSFORM . num_array   (rule 33)
+
+    $default	reduce using rule 2 (array_init)
+
+    array_init	go to state 39
+    num_array	go to state 40
+    real_num_array	go to state 41
+    single_element_num_array	go to state 42
+
+
+
+state 7
+
+    ri_stmt  ->  COORDINATESYSTEM . STRING   (rule 34)
+
+    STRING	shift, and go to state 43
+
+
+
+state 8
+
+    ri_stmt  ->  COORDSYSTRANSFORM . STRING   (rule 35)
+
+    STRING	shift, and go to state 44
+
+
+
+state 9
+
+    ri_stmt  ->  FILM . STRING paramlist   (rule 36)
+
+    STRING	shift, and go to state 45
+
+
+
+state 10
+
+    ri_stmt  ->  IDENTITY .   (rule 37)
+
+    $default	reduce using rule 37 (ri_stmt)
+
+
+
+state 11
+
+    ri_stmt  ->  LIGHTSOURCE . STRING paramlist   (rule 38)
+
+    STRING	shift, and go to state 46
+
+
+
+state 12
+
+    ri_stmt  ->  LOOKAT . NUM NUM NUM NUM NUM NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 47
+
+
+
+state 13
+
+    ri_stmt  ->  MATERIAL . STRING paramlist   (rule 40)
+
+    STRING	shift, and go to state 48
+
+
+
+state 14
+
+    ri_stmt  ->  OBJECTBEGIN . STRING   (rule 41)
+
+    STRING	shift, and go to state 49
+
+
+
+state 15
+
+    ri_stmt  ->  OBJECTEND .   (rule 42)
+
+    $default	reduce using rule 42 (ri_stmt)
+
+
+
+state 16
+
+    ri_stmt  ->  OBJECTINSTANCE . STRING   (rule 43)
+
+    STRING	shift, and go to state 50
+
+
+
+state 17
+
+    ri_stmt  ->  PIXELFILTER . STRING paramlist   (rule 44)
+
+    STRING	shift, and go to state 51
+
+
+
+state 18
+
+    ri_stmt  ->  REVERSEORIENTATION .   (rule 45)
+
+    $default	reduce using rule 45 (ri_stmt)
+
+
+
+state 19
+
+    ri_stmt  ->  ROTATE . NUM NUM NUM NUM   (rule 46)
+
+    NUM 	shift, and go to state 52
+
+
+
+state 20
+
+    ri_stmt  ->  SAMPLER . STRING paramlist   (rule 47)
+
+    STRING	shift, and go to state 53
+
+
+
+state 21
+
+    ri_stmt  ->  SCALE . NUM NUM NUM   (rule 48)
+
+    NUM 	shift, and go to state 54
+
+
+
+state 22
+
+    ri_stmt  ->  SEARCHPATH . STRING   (rule 49)
+
+    STRING	shift, and go to state 55
+
+
+
+state 23
+
+    ri_stmt  ->  SHAPE . STRING paramlist   (rule 50)
+
+    STRING	shift, and go to state 56
+
+
+
+state 24
+
+    ri_stmt  ->  SURFACEINTEGRATOR . STRING paramlist   (rule 51)
+
+    STRING	shift, and go to state 57
+
+
+
+state 25
+
+    ri_stmt  ->  TEXTURE . STRING STRING STRING paramlist   (rule 52)
+
+    STRING	shift, and go to state 58
+
+
+
+state 26
+
+    ri_stmt  ->  TRANSFORMBEGIN .   (rule 53)
+
+    $default	reduce using rule 53 (ri_stmt)
+
+
+
+state 27
+
+    ri_stmt  ->  TRANSFORMEND .   (rule 54)
+
+    $default	reduce using rule 54 (ri_stmt)
+
+
+
+state 28
+
+    ri_stmt  ->  TRANSFORM . real_num_array   (rule 55)
+
+    $default	reduce using rule 2 (array_init)
+
+    array_init	go to state 59
+    real_num_array	go to state 60
+
+
+
+state 29
+
+    ri_stmt  ->  TRANSLATE . NUM NUM NUM   (rule 56)
+
+    NUM 	shift, and go to state 61
+
+
+
+state 30
+
+    ri_stmt  ->  VOLUME . STRING paramlist   (rule 58)
+
+    STRING	shift, and go to state 62
+
+
+
+state 31
+
+    ri_stmt  ->  VOLUMEINTEGRATOR . STRING paramlist   (rule 57)
+
+    STRING	shift, and go to state 63
+
+
+
+state 32
+
+    ri_stmt  ->  WORLDBEGIN .   (rule 59)
+
+    $default	reduce using rule 59 (ri_stmt)
+
+
+
+state 33
+
+    ri_stmt  ->  WORLDEND .   (rule 60)
+
+    $default	reduce using rule 60 (ri_stmt)
+
+
+
+state 34
+
+    start  ->  ri_stmt_list .   (rule 1)
+    ri_stmt_list  ->  ri_stmt_list . ri_stmt   (rule 26)
+
+    ACCELERATOR	shift, and go to state 1
+    AREALIGHTSOURCE	shift, and go to state 2
+    ATTRIBUTEBEGIN	shift, and go to state 3
+    ATTRIBUTEEND	shift, and go to state 4
+    CAMERA	shift, and go to state 5
+    CONCATTRANSFORM	shift, and go to state 6
+    COORDINATESYSTEM	shift, and go to state 7
+    COORDSYSTRANSFORM	shift, and go to state 8
+    FILM	shift, and go to state 9
+    IDENTITY	shift, and go to state 10
+    LIGHTSOURCE	shift, and go to state 11
+    LOOKAT	shift, and go to state 12
+    MATERIAL	shift, and go to state 13
+    OBJECTBEGIN	shift, and go to state 14
+    OBJECTEND	shift, and go to state 15
+    OBJECTINSTANCE	shift, and go to state 16
+    PIXELFILTER	shift, and go to state 17
+    REVERSEORIENTATION	shift, and go to state 18
+    ROTATE	shift, and go to state 19
+    SAMPLER	shift, and go to state 20
+    SCALE	shift, and go to state 21
+    SEARCHPATH	shift, and go to state 22
+    SHAPE	shift, and go to state 23
+    SURFACEINTEGRATOR	shift, and go to state 24
+    TEXTURE	shift, and go to state 25
+    TRANSFORMBEGIN	shift, and go to state 26
+    TRANSFORMEND	shift, and go to state 27
+    TRANSFORM	shift, and go to state 28
+    TRANSLATE	shift, and go to state 29
+    VOLUME	shift, and go to state 30
+    VOLUMEINTEGRATOR	shift, and go to state 31
+    WORLDBEGIN	shift, and go to state 32
+    WORLDEND	shift, and go to state 33
+
+    $default	reduce using rule 1 (start)
+
+    ri_stmt	go to state 64
+
+
+
+state 35
+
+    ri_stmt_list  ->  ri_stmt .   (rule 27)
+
+    $default	reduce using rule 27 (ri_stmt_list)
+
+
+
+state 36
+
+    ri_stmt  ->  ACCELERATOR STRING . paramlist   (rule 28)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 65
+    paramlist_init	go to state 66
+
+
+
+state 37
+
+    ri_stmt  ->  AREALIGHTSOURCE STRING . paramlist   (rule 29)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 67
+    paramlist_init	go to state 66
+
+
+
+state 38
+
+    ri_stmt  ->  CAMERA STRING . paramlist   (rule 32)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 68
+    paramlist_init	go to state 66
+
+
+
+state 39
+
+    real_num_array  ->  array_init . LBRACK num_list RBRACK   (rule 16)
+    single_element_num_array  ->  array_init . num_list_entry   (rule 17)
+
+    LBRACK	shift, and go to state 69
+
+    $default	reduce using rule 4 (num_array_init)
+
+    num_array_init	go to state 70
+    num_list_entry	go to state 71
+
+
+
+state 40
+
+    ri_stmt  ->  CONCATTRANSFORM num_array .   (rule 33)
+
+    $default	reduce using rule 33 (ri_stmt)
+
+
+
+state 41
+
+    num_array  ->  real_num_array .   (rule 14)
+
+    $default	reduce using rule 14 (num_array)
+
+
+
+state 42
+
+    num_array  ->  single_element_num_array .   (rule 15)
+
+    $default	reduce using rule 15 (num_array)
+
+
+
+state 43
+
+    ri_stmt  ->  COORDINATESYSTEM STRING .   (rule 34)
+
+    $default	reduce using rule 34 (ri_stmt)
+
+
+
+state 44
+
+    ri_stmt  ->  COORDSYSTRANSFORM STRING .   (rule 35)
+
+    $default	reduce using rule 35 (ri_stmt)
+
+
+
+state 45
+
+    ri_stmt  ->  FILM STRING . paramlist   (rule 36)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 72
+    paramlist_init	go to state 66
+
+
+
+state 46
+
+    ri_stmt  ->  LIGHTSOURCE STRING . paramlist   (rule 38)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 73
+    paramlist_init	go to state 66
+
+
+
+state 47
+
+    ri_stmt  ->  LOOKAT NUM . NUM NUM NUM NUM NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 74
+
+
+
+state 48
+
+    ri_stmt  ->  MATERIAL STRING . paramlist   (rule 40)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 75
+    paramlist_init	go to state 66
+
+
+
+state 49
+
+    ri_stmt  ->  OBJECTBEGIN STRING .   (rule 41)
+
+    $default	reduce using rule 41 (ri_stmt)
+
+
+
+state 50
+
+    ri_stmt  ->  OBJECTINSTANCE STRING .   (rule 43)
+
+    $default	reduce using rule 43 (ri_stmt)
+
+
+
+state 51
+
+    ri_stmt  ->  PIXELFILTER STRING . paramlist   (rule 44)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 76
+    paramlist_init	go to state 66
+
+
+
+state 52
+
+    ri_stmt  ->  ROTATE NUM . NUM NUM NUM   (rule 46)
+
+    NUM 	shift, and go to state 77
+
+
+
+state 53
+
+    ri_stmt  ->  SAMPLER STRING . paramlist   (rule 47)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 78
+    paramlist_init	go to state 66
+
+
+
+state 54
+
+    ri_stmt  ->  SCALE NUM . NUM NUM   (rule 48)
+
+    NUM 	shift, and go to state 79
+
+
+
+state 55
+
+    ri_stmt  ->  SEARCHPATH STRING .   (rule 49)
+
+    $default	reduce using rule 49 (ri_stmt)
+
+
+
+state 56
+
+    ri_stmt  ->  SHAPE STRING . paramlist   (rule 50)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 80
+    paramlist_init	go to state 66
+
+
+
+state 57
+
+    ri_stmt  ->  SURFACEINTEGRATOR STRING . paramlist   (rule 51)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 81
+    paramlist_init	go to state 66
+
+
+
+state 58
+
+    ri_stmt  ->  TEXTURE STRING . STRING STRING paramlist   (rule 52)
+
+    STRING	shift, and go to state 82
+
+
+
+state 59
+
+    real_num_array  ->  array_init . LBRACK num_list RBRACK   (rule 16)
+
+    LBRACK	shift, and go to state 69
+
+
+
+state 60
+
+    ri_stmt  ->  TRANSFORM real_num_array .   (rule 55)
+
+    $default	reduce using rule 55 (ri_stmt)
+
+
+
+state 61
+
+    ri_stmt  ->  TRANSLATE NUM . NUM NUM   (rule 56)
+
+    NUM 	shift, and go to state 83
+
+
+
+state 62
+
+    ri_stmt  ->  VOLUME STRING . paramlist   (rule 58)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 84
+    paramlist_init	go to state 66
+
+
+
+state 63
+
+    ri_stmt  ->  VOLUMEINTEGRATOR STRING . paramlist   (rule 57)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 85
+    paramlist_init	go to state 66
+
+
+
+state 64
+
+    ri_stmt_list  ->  ri_stmt_list ri_stmt .   (rule 26)
+
+    $default	reduce using rule 26 (ri_stmt_list)
+
+
+
+state 65
+
+    ri_stmt  ->  ACCELERATOR STRING paramlist .   (rule 28)
+
+    $default	reduce using rule 28 (ri_stmt)
+
+
+
+state 66
+
+    paramlist  ->  paramlist_init . paramlist_contents   (rule 21)
+
+    STRING	shift, and go to state 86
+
+    $default	reduce using rule 24 (paramlist_contents)
+
+    paramlist_contents	go to state 87
+    paramlist_entry	go to state 88
+
+
+
+state 67
+
+    ri_stmt  ->  AREALIGHTSOURCE STRING paramlist .   (rule 29)
+
+    $default	reduce using rule 29 (ri_stmt)
+
+
+
+state 68
+
+    ri_stmt  ->  CAMERA STRING paramlist .   (rule 32)
+
+    $default	reduce using rule 32 (ri_stmt)
+
+
+
+state 69
+
+    real_num_array  ->  array_init LBRACK . num_list RBRACK   (rule 16)
+
+    $default	reduce using rule 4 (num_array_init)
+
+    num_array_init	go to state 70
+    num_list	go to state 89
+    num_list_entry	go to state 90
+
+
+
+state 70
+
+    num_list_entry  ->  num_array_init . NUM   (rule 20)
+
+    NUM 	shift, and go to state 91
+
+
+
+state 71
+
+    single_element_num_array  ->  array_init num_list_entry .   (rule 17)
+
+    $default	reduce using rule 17 (single_element_num_array)
+
+
+
+state 72
+
+    ri_stmt  ->  FILM STRING paramlist .   (rule 36)
+
+    $default	reduce using rule 36 (ri_stmt)
+
+
+
+state 73
+
+    ri_stmt  ->  LIGHTSOURCE STRING paramlist .   (rule 38)
+
+    $default	reduce using rule 38 (ri_stmt)
+
+
+
+state 74
+
+    ri_stmt  ->  LOOKAT NUM NUM . NUM NUM NUM NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 92
+
+
+
+state 75
+
+    ri_stmt  ->  MATERIAL STRING paramlist .   (rule 40)
+
+    $default	reduce using rule 40 (ri_stmt)
+
+
+
+state 76
+
+    ri_stmt  ->  PIXELFILTER STRING paramlist .   (rule 44)
+
+    $default	reduce using rule 44 (ri_stmt)
+
+
+
+state 77
+
+    ri_stmt  ->  ROTATE NUM NUM . NUM NUM   (rule 46)
+
+    NUM 	shift, and go to state 93
+
+
+
+state 78
+
+    ri_stmt  ->  SAMPLER STRING paramlist .   (rule 47)
+
+    $default	reduce using rule 47 (ri_stmt)
+
+
+
+state 79
+
+    ri_stmt  ->  SCALE NUM NUM . NUM   (rule 48)
+
+    NUM 	shift, and go to state 94
+
+
+
+state 80
+
+    ri_stmt  ->  SHAPE STRING paramlist .   (rule 50)
+
+    $default	reduce using rule 50 (ri_stmt)
+
+
+
+state 81
+
+    ri_stmt  ->  SURFACEINTEGRATOR STRING paramlist .   (rule 51)
+
+    $default	reduce using rule 51 (ri_stmt)
+
+
+
+state 82
+
+    ri_stmt  ->  TEXTURE STRING STRING . STRING paramlist   (rule 52)
+
+    STRING	shift, and go to state 95
+
+
+
+state 83
+
+    ri_stmt  ->  TRANSLATE NUM NUM . NUM   (rule 56)
+
+    NUM 	shift, and go to state 96
+
+
+
+state 84
+
+    ri_stmt  ->  VOLUME STRING paramlist .   (rule 58)
+
+    $default	reduce using rule 58 (ri_stmt)
+
+
+
+state 85
+
+    ri_stmt  ->  VOLUMEINTEGRATOR STRING paramlist .   (rule 57)
+
+    $default	reduce using rule 57 (ri_stmt)
+
+
+
+state 86
+
+    paramlist_entry  ->  STRING . array   (rule 25)
+
+    $default	reduce using rule 2 (array_init)
+
+    array_init	go to state 97
+    array	go to state 98
+    string_array	go to state 99
+    real_string_array	go to state 100
+    single_element_string_array	go to state 101
+    num_array	go to state 102
+    real_num_array	go to state 41
+    single_element_num_array	go to state 42
+
+
+
+state 87
+
+    paramlist  ->  paramlist_init paramlist_contents .   (rule 21)
+
+    $default	reduce using rule 21 (paramlist)
+
+
+
+state 88
+
+    paramlist_contents  ->  paramlist_entry . paramlist_contents   (rule 23)
+
+    STRING	shift, and go to state 86
+
+    $default	reduce using rule 24 (paramlist_contents)
+
+    paramlist_contents	go to state 103
+    paramlist_entry	go to state 88
+
+
+
+state 89
+
+    real_num_array  ->  array_init LBRACK num_list . RBRACK   (rule 16)
+    num_list  ->  num_list . num_list_entry   (rule 18)
+
+    RBRACK	shift, and go to state 104
+
+    $default	reduce using rule 4 (num_array_init)
+
+    num_array_init	go to state 70
+    num_list_entry	go to state 105
+
+
+
+state 90
+
+    num_list  ->  num_list_entry .   (rule 19)
+
+    $default	reduce using rule 19 (num_list)
+
+
+
+state 91
+
+    num_list_entry  ->  num_array_init NUM .   (rule 20)
+
+    $default	reduce using rule 20 (num_list_entry)
+
+
+
+state 92
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM . NUM NUM NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 106
+
+
+
+state 93
+
+    ri_stmt  ->  ROTATE NUM NUM NUM . NUM   (rule 46)
+
+    NUM 	shift, and go to state 107
+
+
+
+state 94
+
+    ri_stmt  ->  SCALE NUM NUM NUM .   (rule 48)
+
+    $default	reduce using rule 48 (ri_stmt)
+
+
+
+state 95
+
+    ri_stmt  ->  TEXTURE STRING STRING STRING . paramlist   (rule 52)
+
+    $default	reduce using rule 22 (paramlist_init)
+
+    paramlist	go to state 108
+    paramlist_init	go to state 66
+
+
+
+state 96
+
+    ri_stmt  ->  TRANSLATE NUM NUM NUM .   (rule 56)
+
+    $default	reduce using rule 56 (ri_stmt)
+
+
+
+state 97
+
+    real_string_array  ->  array_init . LBRACK string_list RBRACK   (rule 9)
+    single_element_string_array  ->  array_init . string_list_entry   (rule 10)
+    real_num_array  ->  array_init . LBRACK num_list RBRACK   (rule 16)
+    single_element_num_array  ->  array_init . num_list_entry   (rule 17)
+
+    LBRACK	shift, and go to state 109
+
+    NUM 	reduce using rule 4 (num_array_init)
+    $default	reduce using rule 3 (string_array_init)
+    string_array_init	go to state 110
+    num_array_init	go to state 70
+    string_list_entry	go to state 111
+    num_list_entry	go to state 71
+
+
+
+state 98
+
+    paramlist_entry  ->  STRING array .   (rule 25)
+
+    $default	reduce using rule 25 (paramlist_entry)
+
+
+
+state 99
+
+    array  ->  string_array .   (rule 5)
+
+    $default	reduce using rule 5 (array)
+
+
+
+state 100
+
+    string_array  ->  real_string_array .   (rule 7)
+
+    $default	reduce using rule 7 (string_array)
+
+
+
+state 101
+
+    string_array  ->  single_element_string_array .   (rule 8)
+
+    $default	reduce using rule 8 (string_array)
+
+
+
+state 102
+
+    array  ->  num_array .   (rule 6)
+
+    $default	reduce using rule 6 (array)
+
+
+
+state 103
+
+    paramlist_contents  ->  paramlist_entry paramlist_contents .   (rule 23)
+
+    $default	reduce using rule 23 (paramlist_contents)
+
+
+
+state 104
+
+    real_num_array  ->  array_init LBRACK num_list RBRACK .   (rule 16)
+
+    $default	reduce using rule 16 (real_num_array)
+
+
+
+state 105
+
+    num_list  ->  num_list num_list_entry .   (rule 18)
+
+    $default	reduce using rule 18 (num_list)
+
+
+
+state 106
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM . NUM NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 112
+
+
+
+state 107
+
+    ri_stmt  ->  ROTATE NUM NUM NUM NUM .   (rule 46)
+
+    $default	reduce using rule 46 (ri_stmt)
+
+
+
+state 108
+
+    ri_stmt  ->  TEXTURE STRING STRING STRING paramlist .   (rule 52)
+
+    $default	reduce using rule 52 (ri_stmt)
+
+
+
+state 109
+
+    real_string_array  ->  array_init LBRACK . string_list RBRACK   (rule 9)
+    real_num_array  ->  array_init LBRACK . num_list RBRACK   (rule 16)
+
+    NUM 	reduce using rule 4 (num_array_init)
+    $default	reduce using rule 3 (string_array_init)
+    string_array_init	go to state 110
+    num_array_init	go to state 70
+    string_list	go to state 113
+    string_list_entry	go to state 114
+    num_list	go to state 89
+    num_list_entry	go to state 90
+
+
+
+state 110
+
+    string_list_entry  ->  string_array_init . STRING   (rule 13)
+
+    STRING	shift, and go to state 115
+
+
+
+state 111
+
+    single_element_string_array  ->  array_init string_list_entry .   (rule 10)
+
+    $default	reduce using rule 10 (single_element_string_array)
+
+
+
+state 112
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM NUM . NUM NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 116
+
+
+
+state 113
+
+    real_string_array  ->  array_init LBRACK string_list . RBRACK   (rule 9)
+    string_list  ->  string_list . string_list_entry   (rule 11)
+
+    RBRACK	shift, and go to state 117
+
+    $default	reduce using rule 3 (string_array_init)
+
+    string_array_init	go to state 110
+    string_list_entry	go to state 118
+
+
+
+state 114
+
+    string_list  ->  string_list_entry .   (rule 12)
+
+    $default	reduce using rule 12 (string_list)
+
+
+
+state 115
+
+    string_list_entry  ->  string_array_init STRING .   (rule 13)
+
+    $default	reduce using rule 13 (string_list_entry)
+
+
+
+state 116
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM NUM NUM . NUM NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 119
+
+
+
+state 117
+
+    real_string_array  ->  array_init LBRACK string_list RBRACK .   (rule 9)
+
+    $default	reduce using rule 9 (real_string_array)
+
+
+
+state 118
+
+    string_list  ->  string_list string_list_entry .   (rule 11)
+
+    $default	reduce using rule 11 (string_list)
+
+
+
+state 119
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM NUM NUM NUM . NUM NUM   (rule 39)
+
+    NUM 	shift, and go to state 120
+
+
+
+state 120
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM NUM NUM NUM NUM . NUM   (rule 39)
+
+    NUM 	shift, and go to state 121
+
+
+
+state 121
+
+    ri_stmt  ->  LOOKAT NUM NUM NUM NUM NUM NUM NUM NUM NUM .   (rule 39)
+
+    $default	reduce using rule 39 (ri_stmt)
+
+
+
+state 122
+
+    $   	go to state 123
+
+
+
+state 123
+
+    $   	go to state 124
+
+
+
+state 124
+
+    $default	accept
+
+
