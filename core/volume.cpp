@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -21,11 +21,11 @@ COREDLL float PhaseRayleigh(const Vector &w, const Vector &wp) {
 }
 COREDLL float PhaseMieHazy(const Vector &w, const Vector &wp) {
 	float costheta = Dot(w, wp);
-	return 9.f/(4.f*M_PI) * powf(1.f + costheta*costheta, 8.f);
+	return (0.5f + 4.5f * powf(0.5 * (1.f + costheta), 8.f)) / (4.f*M_PI);
 }
 COREDLL float PhaseMieMurky(const Vector &w, const Vector &wp) {
 	float costheta = Dot(w, wp);
-	return 50.f/(4.f*M_PI) * powf(1.f + costheta*costheta, 32.f);
+	return (0.5f + 16.5f * powf(0.5 * (1.f + costheta), 32.f)) / (4.f*M_PI);
 }
 COREDLL
 float PhaseHG(const Vector &w, const Vector &wp, float g) {

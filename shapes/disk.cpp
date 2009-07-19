@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -21,7 +21,7 @@ public:
 	               DifferentialGeometry *dg) const;
 	bool IntersectP(const Ray &ray) const;
 	float Area() const;
-	Point Disk::Sample(float u1, float u2, Normal *Ns) const {
+	Point Sample(float u1, float u2, Normal *Ns) const {
 		Point p;
 		ConcentricSampleDisk(u1, u2, &p.x, &p.y);
 		p.x *= radius;
@@ -74,7 +74,9 @@ bool Disk::Intersect(const Ray &r, float *tHit,
 	float v = 1.f - ((sqrtf(dist2)-innerRadius) /
 	                 (radius-innerRadius));
 	Vector dpdu(-phiMax * phit.y, phiMax * phit.x, 0.);
+	dpdu *= phiMax * INV_TWOPI;
 	Vector dpdv(-phit.x / (1-v), -phit.y / (1-v), 0.);
+	dpdv *= (radius - innerRadius) / radius;
 	Vector dndu(0,0,0), dndv(0,0,0);
 	// Initialize _DifferentialGeometry_ from parametric information
 	*dg = DifferentialGeometry(ObjectToWorld(phit),

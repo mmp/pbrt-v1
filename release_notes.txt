@@ -1,24 +1,49 @@
 
-pbrt Release 1.02 (25 April 2005)
+pbrt Release 1.03 (24 June 2007)
 
 -------------
 Installation:
 -------------
 
-The pbrtsrc-1.02.tar.gz and pbrtsrc-1.02.zip files include updated source
+The pbrtsrc-1.03.tar.gz and pbrtsrc-1.03.zip files include updated source
 code to the pbrt rendering system described in "Physically Based Rendering:
 From Theory to Implementation" by Matt Pharr and Greg Humphreys.  The zip
-file includes project files and libraries for bulding the system under
-Windows and the tar.gz file includes make files and libraries for building
-under Linux and OSX.  
+file includes project files, source code, and OpenEXR libraries for bulding
+the system under Windows, and the tar.gz file includes makefiles and source
+code for building under Linux, OSX, FreeBSD, and OpenBSD.  (For these
+platforms, you are expected to install OpenEXR on your system yourself;
+information about how to do this is provided during the build process.)
 
 See page 1017 of the PBR book for informaton about building and installing
 under Windows and page 1018 for information about building and installing
 under Linux.  See the pbrt.org website for more information about pbrt.
 
-See the accompanying file license.txt for information about the license
-agreement under which this software is provided.  Your use of this software
-constitutes acceptance of this license.
+The source code to pbrt (*but not the contents of the book itself*) is
+released under the GNU Public License; see the accompanying file
+COPYING.txt for information about the license agreement under which this
+software is provided.  Your use of this software constitutes acceptance of
+this license.
+
+Thanks in particular to John Danks and Kevin Egan for many bug reports and
+patches that went into this release.
+
+--------------------
+** Important note **
+--------------------
+
+This release includes a fix to bug 45, which leads to different results
+being returned from FresnelBlend BSDFs.  In particular, the TT model (and
+any other scene that uses this BSDF) will render differently in 1.03 than
+it did in 1.02.  However, the 1.03 behavior should match the 1.01
+behavior.  (And is believed to finally be fully correct.)
+
+--------------
+Other Changes:
+--------------
+
+This release (like the 1.02 release, though it wasn't mentioned in the
+release notes for that release), has the author-supplied plugins from
+http://pbrt.org/downloads.php already included.
 
 ----------
 Bug Fixes: 
@@ -26,6 +51,74 @@ Bug Fixes:
 
 The following bugs from the pbrt bug database (http://pbrt.org/bugtracker)
 are fixed in this release.
+
+- Bug #77: Fix the Mie scattering phase functions to actually integrate to
+one...
+
+- Bug #76: Added missing deletes in ParamSet::Erase*() methods.
+
+- Bug #75: Rewrote ply2pbrt to be in newfangled "ANSI C", not K&R.
+
+- Bug #74: Added calls to let Materials access geometry and material
+ParamSets directly.
+
+- Bug #70: The hemisphere check in the Blinn class was incorrect
+
+- Bug #68: The OrenNayar BRDF would return NaNs for certain ill-behaved
+  directions.
+
+- Bug #66: Logic in exponent check in Blinn() constructor was incorrect
+
+- Bug #65: May have uninitialized values in LDSampler if an instance is
+constructed and then destroyed without any samples being generated.
+
+- Bug #57: Cylindrical texture mapping code had a typo in the discontiuity
+detection code where it computes dtdy.
+
+- Bug #56: Partial derivatives of disks are computed incorrectly if the
+inner-radius is non-zero.
+
+- Bug #55: The single-scattering volume integrator would crash when there
+were no lights
+
+- Bug #54: Change embedded ^M in pbrtlex.l to a more-portable \x0a
+
+- Bug #53: The DirectLighting integrator was incorrectly requesting a
+single 2D sample, rather than a single 1D sample, for the case of
+choosing a single light source to sample from. 
+
+- Bug #51: Fixed gcc 4.02 build issues.
+
+- Bug #48: Radiance scale factor for transmission into a dielectric was
+incorrect.
+
+- Bug #46: TriangleMesh::GetShadingGeometry() wasn't properly transforming
+the partial derivatives into world space.
+
+- Bug #45: Fixed incorrect scale factor in FresnelBlend::f() method.
+
+- Bug #44: Invalid ray differentials could be initialized in Scene::
+Render() due to that method not paying addention to the weights
+returned by Camera::GenerateRay() for the auxiliary rays.
+
+- Bug #43: OSX 10.4 build issues fixed
+
+- Bug #42: NURBS specificed with homogeneous "Pw" coordinates would
+incorrectly hit an assertion in the NURBS CreateShape() routine.
+
+- Bug #41: Use safe string functions (snprintf(), etc.) to avoid buffer
+  overflows (and make OpenBSD's compiler happier)
+
+- Bug #40: Added support for OpenBSD to makefile and pbrt.h
+
+- Bug #34: Out of bounds sample locations would crash
+  ImageFilm::AddSample()
+
+------------------------------
+Bug Fixes In The 1.02 Release:
+------------------------------
+
+The following bugs were fixed in the previous pbrt patch release.
 
 - Bug #2: Fixed errors in windows project files: film.cpp was missing
 from core project, buffer security turned off for release builds, had

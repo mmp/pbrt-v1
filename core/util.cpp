@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -396,8 +396,9 @@ ProgressReporter::ProgressReporter(int totalWork, const string &title, int bar_l
 	timer->Start();
 	outFile = stdout;
 	// Initialize progress string
-	buf = new char[title.size() + totalPlusses + 64];
-	sprintf(buf, "\r%s: [", title.c_str());
+	const int bufLen = title.size() + totalPlusses + 64;
+	buf = new char[bufLen];
+	snprintf(buf, bufLen, "\r%s: [", title.c_str());
 	curSpace = buf + strlen(buf);
 	char *s = curSpace;
 	for (int i = 0; i < totalPlusses; ++i)

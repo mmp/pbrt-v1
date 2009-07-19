@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -21,7 +21,7 @@ public:
 	               DifferentialGeometry *dg) const;
 	bool IntersectP(const Ray &ray) const;
 	float Area() const;
-	Point Cylinder::Sample(float u1, float u2,
+	Point Sample(float u1, float u2,
 			Normal *Ns) const {
 		float z = Lerp(u1, zmin, zmax);
 		float t = u2 * phiMax;

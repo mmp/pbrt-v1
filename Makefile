@@ -1,43 +1,47 @@
-
 ARCH = $(shell uname)
-
 LEX=flex
 YACC=bison -d -v -t
 LEXLIB = -lfl
-ifneq ($(ARCH),Darwin)
 DLLLIB = -ldl
+ifeq ($(ARCH),Darwin)
+  DLLLIB =
 endif
-EXRINCLUDE=OpenEXR/include
-EXRLIBS=-lIlmImf -lImath -lIex -lHalf -lz
+ifeq ($(ARCH),OpenBSD)
+  DLLLIB =
+endif
 
+EXRINCLUDE=-I/usr/local/include/OpenEXR
+EXRLIBDIR=-L/usr/local/lib
+EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lImath -lIex -lHalf -Bdynamic -lz
+ifeq ($(ARCH),Linux)
+  EXRLIBS += -lpthread
+endif
+
+
+CC=gcc
 CXX=g++
+LD=$(CXX) $(OPT)
 OPT=-O2
-INCLUDE=-I. -Icore -I$(EXRINCLUDE)
+# OPT=-O2 -msse -mfpmath=sse
+INCLUDE=-I. -Icore $(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
 CXXFLAGS=$(OPT) $(INCLUDE) $(WARN)
-LIBS=$(LEXLIB) $(DLLLIB) -L$(EXRLIBDIR) $(EXRLIBS) -lm 
+CCFLAGS=$(CXXFLAGS)
+LIBS=$(LEXLIB) $(DLLLIB) $(EXRLIBDIR) $(EXRLIBS) -lm 
+
+SHARED_LDFLAGS = -shared
+LRT_LDFLAGS=-rdynamic $(OPT)
+#PBRTPRELINK=-Wl,--export-dynamic -Wl,-whole-archive
+#PBRTPOSTLINK=-Wl,-no-whole-archive
+
 ifeq ($(ARCH), Darwin)
-OS_VERSION = $(shell uname -r)
+  OS_VERSION = $(shell uname -r)
   SHARED_LDFLAGS = -flat_namespace -undefined suppress -bundle -noprebind
-  LRT_LDFLAGS=$(OPT) -L/sw/lib
-  #PBRTPRELINK=-Wl,-all_load
+  LRT_LDFLAGS=$(OPT) # -L/sw/lib
   INCLUDE += -I/sw/include
-  CXX=g++
-  ifeq ($(OS_VERSION),8.0.0)
-  EXRLIBDIR=OpenEXR/lib-osx-tiger
-  else
-  EXRLIBDIR=OpenEXR/lib-osx
-  endif
   WARN += -Wno-long-double
-else
-  SHARED_LDFLAGS = -shared
-  LRT_LDFLAGS=-rdynamic $(OPT)
-  EXRLIBDIR=OpenEXR/lib-linux
-  PBRTPRELINK=-Wl,--export-dynamic -Wl,-whole-archive
-  PBRTPOSTLINK=-Wl,-no-whole-archive
 endif
-LD=$(CXX) $(OPT)
 
 ACCELERATORS = grid kdtree
 CAMERAS      = environment orthographic perspective
@@ -108,7 +112,7 @@ CORE_HEADERS := $(addprefix core/, $(CORE_HEADERFILES) )
             $(VOLUMES_OBJS) $(ACCELERATORS_OBJS) $(CAMERAS_OBJS) $(FILTERS_OBJS) \
             $(FILM_OBJS) $(TONEMAPS_OBJS) $(SAMPLERS_OBJS) $(TEXTURES_OBJS)
 
-.PHONY: tools
+.PHONY: tools exrcheck
 
 default: $(CORE_LIB) $(RENDERER_BINARY) $(INTEGRATORS_DSOS) $(VOLUMES_DSOS) $(FILM_DSOS) $(SHAPES_DSOS) $(MATERIALS_DSOS) $(LIGHTS_DSOS) $(ACCELERATORS_DSOS) $(CAMERAS_DSOS) $(SAMPLERS_DSOS) $(FILTERS_DSOS) $(TONEMAPS_DSOS) $(TEXTURES_DSOS) #tools
 
@@ -129,6 +133,10 @@ objs/%.o: renderer/%.cpp $(CORE_HEADERS)
 objs/%.o: core/%.cpp $(CORE_HEADERS)
 	@echo "Compiling $<"
 	@$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+objs/%.o: core/%.c $(CORE_HEADERS)
+	@echo "Compiling $<"
+	@$(CC) $(CCFLAGS) -o $@ -c $<
 
 objs/%.o: shapes/%.cpp $(CORE_HEADERS)
 	@echo "Building Shape Plugin \"$*\""
@@ -182,15 +190,23 @@ core/pbrtlex.cpp: core/pbrtlex.l
 	@echo "Lex'ing pbrtlex.l"
 	@$(LEX) -o$@ core/pbrtlex.l
 
-core/pbrtparse.cpp: core/pbrtparse.y
+core/pbrtparse.h core/pbrtparse.cpp: core/pbrtparse.y
 	@echo "YACC'ing pbrtparse.y"
 	@$(YACC) -o $@ core/pbrtparse.y
+	@if [ -e core/pbrtparse.cpp.h ]; then /bin/mv core/pbrtparse.cpp.h core/pbrtparse.h; fi
+	@if [ -e core/pbrtparse.hpp ]; then /bin/mv core/pbrtparse.hpp core/pbrtparse.h; fi
 
 $(RENDERER_BINARY): $(RENDERER_OBJS) $(CORE_LIB)
 	@echo "Linking $@"
 	@$(CXX) $(LRT_LDFLAGS) -o $@ $(RENDERER_OBJS) $(PBRTPRELINK) $(CORE_OBJS) $(PBRTPOSTLINK) $(LIBS)
 
 clean:
-	rm -f */*.o */*.so */*.a bin/pbrt core/pbrtlex.cpp core/pbrtparse.cpp*
+	rm -f */*.o */*.so */*.a bin/pbrt core/pbrtlex.[ch]* core/pbrtparse.[ch]*
 	(cd tools && $(MAKE) clean)
 
+objs/exrio.o: exrcheck
+
+exrcheck:
+	@echo -n Checking for EXR installation... 
+	@$(CXX) $(CXXFLAGS) -o exrcheck exrcheck.cpp $(LIBS) || \
+		(cat exrinstall.txt; exit 1)

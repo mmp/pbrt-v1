@@ -17,7 +17,7 @@
  * along with  this program;  if not, write to the  Free Software Foundation,
  * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
- * $Id: 3ds2lrt.c,v 1.1 2004/05/14 01:23:49 mmp Exp $
+ * $Id: 3ds2lrt.c 1063 2004-05-14 01:23:50Z mmp $
  */
 #include <lib3ds/file.h>
 #include <lib3ds/vector.h>

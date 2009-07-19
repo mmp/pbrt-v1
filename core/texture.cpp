@@ -107,7 +107,7 @@ CylindricalMapping2D::Map(const DifferentialGeometry &dg,
 	*dsdy = (sy - *s) / delta;
 	*dtdy = (ty - *t) / delta;
 	if (*dtdy > .5) *dtdy = 1.f - *dtdy;
-	else if (*dtdy < -.5f) *dtdx = -(*dtdy + 1);
+	else if (*dtdy < -.5f) *dtdy = -(*dtdy + 1);
 }
 void CylindricalMapping2D::cylinder(const Point &p,
 		float *s, float *t) const {

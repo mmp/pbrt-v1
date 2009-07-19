@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -22,14 +22,14 @@ public:
 	               DifferentialGeometry *dg) const;
 	bool IntersectP(const Ray &ray) const;
 	float Area() const;
-	Point Sphere::Sample(float u1, float u2, Normal *ns) const {
+	Point Sample(float u1, float u2, Normal *ns) const {
 		Point p = Point(0,0,0) + radius *
 			UniformSampleSphere(u1, u2);
 		*ns = Normalize(ObjectToWorld(Normal(p.x, p.y, p.z)));
 		if (reverseOrientation) *ns *= -1.f;
 		return ObjectToWorld(p);
 	}
-	Point Sphere::Sample(const Point &p,
+	Point Sample(const Point &p,
 			float u1, float u2, Normal *ns) const {
 		// Compute coordinate system for sphere sampling
 		Point Pcenter = ObjectToWorld(Point(0,0,0));
@@ -56,7 +56,7 @@ public:
 		if (reverseOrientation) *ns *= -1.f;
 		return ps;
 	}
-	float Sphere::Pdf(const Point &p, const Vector &wi) const {
+	float Pdf(const Point &p, const Vector &wi) const {
 		Point Pcenter = ObjectToWorld(Point(0,0,0));
 		// Return uniform weight if point inside sphere
 		if (DistanceSquared(p, Pcenter) - radius*radius < 1e-4f)

@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -109,7 +109,7 @@ Spectrum SpecularTransmission::Sample_f(const Vector &wo,
 				 cost);
 	*pdf = 1.f;
 	Spectrum F = fresnel.Evaluate(CosTheta(wo));
-	return (ei*ei)/(et*et) * (Spectrum(1.)-F) * T /
+	return (et*et)/(ei*ei) * (Spectrum(1.)-F) * T /
 		fabsf(CosTheta(*wi));
 }
 Spectrum Lambertian::f(const Vector &wo,
@@ -121,10 +121,13 @@ Spectrum OrenNayar::f(const Vector &wo,
 	float sinthetai = SinTheta(wi);
 	float sinthetao = SinTheta(wo);
 	// Compute cosine term of Oren--Nayar model
-	float sinphii = SinPhi(wi), cosphii = CosPhi(wi);
-	float sinphio = SinPhi(wo), cosphio = CosPhi(wo);
-	float dcos = cosphii * cosphio + sinphii * sinphio;
-	float maxcos = max(0.f, dcos);
+	float maxcos = 0.f;
+	if (sinthetai > 1e-4 && sinthetao > 1e-4) {
+		float sinphii = SinPhi(wi), cosphii = CosPhi(wi);
+		float sinphio = SinPhi(wo), cosphio = CosPhi(wo);
+		float dcos = cosphii * cosphio + sinphii * sinphio;
+		maxcos = max(0.f, dcos);
+	}
 	// Compute sine and tangent terms of Oren--Nayar model
 	float sinalpha, tanbeta;
 	if (fabsf(CosTheta(wi)) > fabsf(CosTheta(wo))) {
@@ -192,7 +195,7 @@ Spectrum FresnelBlend::f(const Vector &wo,
 		(1 - powf(1 - .5f * fabsf(CosTheta(wo)), 5));
 	Vector H = Normalize(wi + wo);
 	Spectrum specular = distribution->D(H) /
-		(8.f * M_PI * AbsDot(wi, H) *
+		(4.f * AbsDot(wi, H) *
 		max(fabsf(CosTheta(wi)), fabsf(CosTheta(wo)))) *
 		SchlickFresnel(Dot(wi, H));
 	return diffuse + specular;
@@ -231,7 +234,7 @@ void Blinn::Sample_f(const Vector &wo, Vector *wi,
 	float sintheta = sqrtf(max(0.f, 1.f - costheta*costheta));
 	float phi = u2 * 2.f * M_PI;
 	Vector H = SphericalDirection(sintheta, costheta, phi);
-	if (Dot(wo, H) < 0.f) H = -H;
+	if (!SameHemisphere(wo, H)) H.z *= -1.f;
 	// Compute incident direction by reflecting about $\wh$
 	*wi = -wo + 2.f * Dot(wo, H) * H;
 	// Compute PDF for \wi from Blinn distribution

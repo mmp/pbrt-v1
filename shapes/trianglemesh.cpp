@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -113,7 +113,7 @@ public:
 		else
 			dndu = dndv = Vector(0,0,0);
 		*dgShading = DifferentialGeometry(dg.p, ss, ts,
-			dndu, dndv, dg.u, dg.v, dg.shape);
+			ObjectToWorld(dndu), ObjectToWorld(dndv), dg.u, dg.v, dg.shape);
 		dgShading->dudx = dg.dudx;  dgShading->dvdx = dg.dvdx; // NOBOOK
 		dgShading->dudy = dg.dudy;  dgShading->dvdy = dg.dvdy; // NOBOOK
 		dgShading->dpdx = dg.dpdx;  dgShading->dpdy = dg.dpdy; // NOBOOK

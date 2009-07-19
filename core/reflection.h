@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -293,13 +293,13 @@ private:
 };
 class COREDLL Blinn : public MicrofacetDistribution {
 public:
-	Blinn(float e) { exponent = e; if (e > 1000.f || isnan(e)) e = 1000.f; }
+	Blinn(float e) { if (e > 1000.f || isnan(e)) e = 1000.f; exponent = e; }
 	// Blinn Public Methods
 	float D(const Vector &wh) const {
 		float costhetah = fabsf(CosTheta(wh));
 		return (exponent+2) *
 		       INV_TWOPI *
-			   powf(max(0.f, costhetah), exponent);
+			   powf(costhetah, exponent);
 	}
 	virtual void Sample_f(const Vector &wi, Vector *sampled_f, float u1, float u2, float *pdf) const;
 	virtual float Pdf(const Vector &wi, const Vector &wo) const;

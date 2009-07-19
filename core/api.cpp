@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -18,6 +18,10 @@
 #include "volume.h"
 #include <map>
 using std::map;
+#if (_MSC_VER >= 1400) // NOBOOK
+#include <stdio.h>     // NOBOOK
+#define snprintf _snprintf // NOBOOK
+#endif // NOBOOK
 // API Local Classes
 struct RenderOptions {
 	// RenderOptions Public Methods

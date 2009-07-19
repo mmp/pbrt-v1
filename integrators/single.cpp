@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -79,7 +79,7 @@ Spectrum SingleScattering::Li(const Scene *scene,
 		// Compute single-scattering source term at _p_
 		Lv += Tr * vr->Lve(p, w);
 		Spectrum ss = vr->sigma_s(p, w);
-		if (!ss.Black()) {
+		if (!ss.Black() && scene->lights.size() > 0) {
 			int nLights = scene->lights.size();
 			int lightNum =
 				min(Floor2Int(samp[sampOffset] * nLights),

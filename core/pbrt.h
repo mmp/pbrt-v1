@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -12,10 +12,10 @@
 #define PBRT_PBRT_H
 // pbrt.h*
 // Global Include Files
-#if !defined(__APPLE__)
+#if !defined(__APPLE__) && !defined(__OpenBSD__)
 #include <malloc.h> // for _alloca, memalign
 #endif
-#if !defined(WIN32) && !defined(__APPLE__)
+#if !defined(WIN32) && !defined(__APPLE__) && !defined(__OpenBSD__)
 #include <alloca.h>
 #endif
 #ifdef __linux__
@@ -50,6 +50,8 @@ using std::sort;
 #define memalign(a,b) _aligned_malloc(b, a)
 #elif defined(__APPLE__)
 #define memalign(a,b) valloc(b)
+#elif defined(__OpenBSD__)
+#define memalign(a,b) malloc(b)
 #endif
 #ifdef sgi
 #define for if (0) ; else for
@@ -189,7 +191,7 @@ class VolumeIntegrator;
 #ifndef INFINITY
 #define INFINITY FLT_MAX
 #endif
-#define PBRT_VERSION 1.02
+#define PBRT_VERSION 1.03
 #define RAY_EPSILON 1e-3f
 #define COLOR_SAMPLES 3
 // Global Function Declarations
@@ -559,7 +561,12 @@ inline float Log2(float x) {
 	return logf(x) * invLog2;
 }
 inline int Log2Int(float v) {
-	return ((*(int *) &v) >> 23) - 127;
+#if 0
+ 	return ((*reinterpret_cast<int *>(&v)) >> 23) - 127;
+#else
+#define _doublemagicroundeps	      (.5-1.4e-11)
+	return int(Log2(v) + _doublemagicroundeps);
+#endif
 }
 inline bool IsPowerOf2(int v) {
 	return (v & (v - 1)) == 0;
@@ -574,7 +581,7 @@ inline u_int RoundUpPow2(u_int v) {
 	return v+1;
 }
 #if (defined(__linux__) && defined(__i386__)) || defined(WIN32)
-#define FAST_INT 1
+//#define FAST_INT 1
 #endif
 #define _doublemagicroundeps	      (.5-1.4e-11)
 	//almost .5f = .5f - 1e^(number of exp bit)
@@ -583,7 +590,7 @@ inline int Round2Int(double val) {
 #define _doublemagic			double (6755399441055744.0)
 	//2^52 * 1.5,  uses limited precision to floor
 	val		= val + _doublemagic;
-	return ((long*)&val)[0];
+	return (reinterpret_cast<long*>(&val))[0];
 #else
 	return int (val+_doublemagicroundeps);
 #endif
@@ -600,14 +607,14 @@ inline int Floor2Int(double val) {
 #ifdef FAST_INT
 	return Round2Int(val - _doublemagicroundeps);
 #else
-	return (int)floorf(val);
+	return (int)floor(val);
 #endif
 }
 inline int Ceil2Int(double val) {
 #ifdef FAST_INT
 	return Round2Int(val + _doublemagicroundeps);
 #else
-	return (int)ceilf(val);
+	return (int)ceil(val);
 #endif
 }
 inline float RandomFloat();

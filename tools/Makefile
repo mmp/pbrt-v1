@@ -26,6 +26,5 @@ default: $(PBRT_TOOLS)
 
 ply2pbrt: ply.h ply.c ply2pbrt.c
 	$(CC) $(OPT) -I. -o ply2pbrt ply2pbrt.c ply.c -lm
-
 clean:
 	rm -f $(PBRT_TOOLS) *.o *~

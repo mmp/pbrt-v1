@@ -24,6 +24,7 @@ WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 #include <stdio.h>
 #include <math.h>
 #include <strings.h>
+#include <stdlib.h>
 #include <ply.h>
 
 
@@ -75,14 +76,18 @@ static PlyOtherProp *vert_other,*face_other;
 static int per_vertex_color = 0;
 static int has_normals = 0;
 
+void usage(char *progname);
+void read_file(void);
+void write_lrt(void);
+
 
 /******************************************************************************
 Main program.
 ******************************************************************************/
 
+int
 main(int argc, char *argv[])
 {
-  int i,j;
   char *s;
   char *progname;
 
@@ -100,6 +105,7 @@ main(int argc, char *argv[])
 
   read_file();
   write_lrt();
+  return 0;
 }
 
 
@@ -107,6 +113,7 @@ main(int argc, char *argv[])
 Print out usage information.
 ******************************************************************************/
 
+void
 usage(char *progname)
 {
   fprintf (stderr, "usage: %s [flags] <in.ply >out.iv\n", progname);
@@ -117,7 +124,8 @@ usage(char *progname)
 Read in the PLY file from standard in.
 ******************************************************************************/
 
-read_file()
+void
+read_file(void)
 {
   int i,j;
   int elem_count;
@@ -217,9 +225,10 @@ read_file()
 Write out a lrt file.
 ******************************************************************************/
 
-write_lrt()
+void
+write_lrt(void)
 {
-  int i,j,k;
+  int i,j;
 
   printf ("Shape \"trianglemesh\" \n");
   printf ("  \"vertex point P\" [\n");

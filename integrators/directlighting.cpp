@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -48,7 +48,7 @@ public:
 			bsdfSampleOffset = new int[1];
 			bsdfSampleOffset[0] = sample->Add2D(1);
 			bsdfComponentOffset = new int[1];
-			bsdfComponentOffset[0] = sample->Add2D(1);
+			bsdfComponentOffset[0] = sample->Add1D(1);
 		}
 	}
 private:

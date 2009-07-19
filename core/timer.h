@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -14,17 +14,12 @@
 #include "pbrt.h"
 #if defined ( WIN32 )
 #include <windows.h>
-#elif defined (IRIX) || defined (IRIX64)
-#include <stddef.h>
-#include <fcntl.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/syssgi.h>
-#include <sys/errno.h>
-#include <unistd.h>
 #else
 #include <sys/time.h>
+#endif
+#if (_MSC_VER >= 1400)
+#include <stdio.h>
+#define snprintf _snprintf
 #endif
 // Timer Declarations
 class COREDLL Timer {

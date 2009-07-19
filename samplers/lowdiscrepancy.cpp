@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -48,7 +48,7 @@ LDSampler::LDSampler(int xstart, int xend,
 	yPos = yPixelStart;
 	if (!IsPowerOf2(ps)) {
 		Warning("Pixel samples being"
-		        "rounded up to power of 2");
+		        " rounded up to power of 2");
 		pixelSamples = RoundUpPow2(ps);
 	}
 	else
@@ -58,6 +58,7 @@ LDSampler::LDSampler(int xstart, int xend,
 	imageSamples = new float[5*pixelSamples];
 	lensSamples = imageSamples + 2*pixelSamples;
 	timeSamples = imageSamples + 4*pixelSamples;
+	n1D = n2D = 0;
 }
 bool LDSampler::GetNextSample(Sample *sample) {
 	if (!oneDSamples) {

@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -95,8 +95,7 @@ struct KdAccelNode;
 class  KdTreeAccel : public Aggregate {
 public:
 	// KdTreeAccel Public Methods
-	KdTreeAccel::
-	    KdTreeAccel(const vector<Reference<Primitive> > &p,
+	KdTreeAccel(const vector<Reference<Primitive> > &p,
 		int icost, int scost,
 		float ebonus, int maxp, int maxDepth);
 	BBox WorldBound() const { return bounds; }

@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -30,7 +30,7 @@ void ParseError( const char *format, ... ) {
 	char error[4096];
 	va_list args;
 	va_start( args, format );
-	vsprintf( error, format, args );
+	vsnprintf(error, 4096, format, args);
 	yyerror(error);
 	va_end( args );
 }

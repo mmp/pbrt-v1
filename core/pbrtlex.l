@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -19,10 +19,10 @@
 
 struct ParamArray;
 
-#ifdef __APPLE__
-#include "pbrtparse.cpp.h"
-#else
+#ifdef WIN32
 #include "pbrtparse.hpp"
+#else
+#include "pbrtparse.h"
 #endif
 
 #ifdef WIN32
@@ -79,7 +79,7 @@ void include_pop(void)
 }
 %}
 %option nounput
-WHITESPACE [ \t]+
+WHITESPACE [ \t\0xa]+
 NUMBER [-+]?([0-9]+|(([0-9]+\.[0-9]*)|(\.[0-9]+)))([eE][-+]?[0-9]+)?
 IDENT [a-zA-Z_][a-zA-Z_0-9]*
 %x STR COMMENT INCL INCL_FILE

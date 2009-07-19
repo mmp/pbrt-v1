@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -32,11 +32,11 @@ void Scene::Render() {
 		float rayWeight = camera->GenerateRay(*sample, &ray);
 		// Generate ray differentials for camera ray
 		++(sample->imageX);
-		camera->GenerateRay(*sample, &ray.rx);
+		float wt1 = camera->GenerateRay(*sample, &ray.rx);
 		--(sample->imageX);
 		++(sample->imageY);
-		camera->GenerateRay(*sample, &ray.ry);
-		ray.hasDifferentials = true;
+		float wt2 = camera->GenerateRay(*sample, &ray.ry);
+		if (wt1 > 0 && wt2 > 0) ray.hasDifferentials = true;
 		--(sample->imageY);
 		// Evaluate radiance along camera ray
 		float alpha;

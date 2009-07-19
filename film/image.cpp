@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -19,10 +19,10 @@
 class ImageFilm : public Film {
 public:
 	// ImageFilm Public Methods
-	ImageFilm::ImageFilm(int xres, int yres,
+	ImageFilm(int xres, int yres,
 	                     Filter *filt, const float crop[4],
-			             const string &filename, bool premult,
-			             int wf);
+		             const string &filename, bool premult,
+		             int wf);
 	~ImageFilm() {
 		delete pixels;
 		delete filter;
@@ -100,6 +100,7 @@ void ImageFilm::AddSample(const Sample &sample,
 	x1 = min(x1, xPixelStart + xPixelCount - 1);
 	y0 = max(y0, yPixelStart);
 	y1 = min(y1, yPixelStart + yPixelCount - 1);
+	if ((x1-x0) < 0 || (y1-y0) < 0) return;
 	// Loop over filter support and add sample to pixel arrays
 	// Precompute $x$ and $y$ filter table offsets
 	int *ifx = (int *)alloca((x1-x0+1) * sizeof(int));

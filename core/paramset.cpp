@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -82,6 +82,7 @@ void ParamSet::AddTexture(const string &name, const string &value) {
 bool ParamSet::EraseInt(const string &n) {
 	for (u_int i = 0; i < ints.size(); ++i)
 		if (ints[i]->name == n) {
+			delete ints[i];
 			ints.erase(ints.begin() + i);
 			return true;
 		}
@@ -90,6 +91,7 @@ bool ParamSet::EraseInt(const string &n) {
 bool ParamSet::EraseBool(const string &n) {
 	for (u_int i = 0; i < bools.size(); ++i)
 		if (bools[i]->name == n) {
+			delete bools[i];
 			bools.erase(bools.begin() + i);
 			return true;
 		}
@@ -98,6 +100,7 @@ bool ParamSet::EraseBool(const string &n) {
 bool ParamSet::EraseFloat(const string &n) {
 	for (u_int i = 0; i < floats.size(); ++i)
 		if (floats[i]->name == n) {
+			delete floats[i];
 			floats.erase(floats.begin() + i);
 			return true;
 		}
@@ -106,6 +109,7 @@ bool ParamSet::EraseFloat(const string &n) {
 bool ParamSet::ErasePoint(const string &n) {
 	for (u_int i = 0; i < points.size(); ++i)
 		if (points[i]->name == n) {
+			delete points[i];
 			points.erase(points.begin() + i);
 			return true;
 		}
@@ -114,6 +118,7 @@ bool ParamSet::ErasePoint(const string &n) {
 bool ParamSet::EraseVector(const string &n) {
 	for (u_int i = 0; i < vectors.size(); ++i)
 		if (vectors[i]->name == n) {
+			delete vectors[i];
 			vectors.erase(vectors.begin() + i);
 			return true;
 		}
@@ -122,6 +127,7 @@ bool ParamSet::EraseVector(const string &n) {
 bool ParamSet::EraseNormal(const string &n) {
 	for (u_int i = 0; i < normals.size(); ++i)
 		if (normals[i]->name == n) {
+			delete normals[i];
 			normals.erase(normals.begin() + i);
 			return true;
 		}
@@ -130,6 +136,7 @@ bool ParamSet::EraseNormal(const string &n) {
 bool ParamSet::EraseSpectrum(const string &n) {
 	for (u_int i = 0; i < spectra.size(); ++i)
 		if (spectra[i]->name == n) {
+			delete spectra[i];
 			spectra.erase(spectra.begin() + i);
 			return true;
 		}
@@ -138,6 +145,7 @@ bool ParamSet::EraseSpectrum(const string &n) {
 bool ParamSet::EraseString(const string &n) {
 	for (u_int i = 0; i < strings.size(); ++i)
 		if (strings[i]->name == n) {
+			delete strings[i];
 			strings.erase(strings.begin() + i);
 			return true;
 		}
@@ -146,6 +154,7 @@ bool ParamSet::EraseString(const string &n) {
 bool ParamSet::EraseTexture(const string &n) {
 	for (u_int i = 0; i < textures.size(); ++i)
 		if (textures[i]->name == n) {
+			delete textures[i];
 			textures.erase(textures.begin() + i);
 			return true;
 		}
@@ -247,9 +256,12 @@ string ParamSet::ToString() const {
 	u_int i;
 	int j;
 	string typeString;
-	static char *buf = new char[48*1024*1024];
+	const int bufLen = 48*1024*1024;
+	static char *buf = new char[bufLen];
+	char *bufEnd = buf + bufLen;
 	for (i = 0; i < ints.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<int> *item = ints[i];
 		typeString = "integer ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -260,12 +272,13 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%d ", item->data[j]);
+			bufp += snprintf(bufp, bufEnd - bufp, "%d ", item->data[j]);
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < bools.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<bool> *item = bools[i];
 		typeString = "bool ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -276,12 +289,13 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "\"%s\" ", item->data[j] ? "true" : "false");
+			bufp += snprintf(bufp, bufEnd - bufp, "\"%s\" ", item->data[j] ? "true" : "false");
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < floats.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<float> *item = floats[i];
 		typeString = "float ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -292,12 +306,13 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%.8g ", item->data[j]);
+			bufp += snprintf(bufp, bufEnd - bufp, "%.8g ", item->data[j]);
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < points.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<Point> *item = points[i];
 		typeString = "point ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -308,13 +323,14 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%.8g %.8g %.8g ", item->data[j].x,
+			bufp += snprintf(bufp, bufEnd - bufp, "%.8g %.8g %.8g ", item->data[j].x,
 				item->data[j].y, item->data[j].z);
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < vectors.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<Vector> *item = vectors[i];
 		typeString = "vector ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -325,13 +341,14 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%.8g %.8g %.8g ", item->data[j].x,
+			bufp += snprintf(bufp, bufEnd - bufp, "%.8g %.8g %.8g ", item->data[j].x,
 				item->data[j].y, item->data[j].z);
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < normals.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<Normal> *item = normals[i];
 		typeString = "normal ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -342,13 +359,14 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%.8g %.8g %.8g ", item->data[j].x,
+			bufp += snprintf(bufp, bufEnd - bufp, "%.8g %.8g %.8g ", item->data[j].x,
 				item->data[j].y, item->data[j].z);
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < strings.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<string> *item = strings[i];
 		typeString = "string ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -359,12 +377,13 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "\"%s\" ", item->data[j].c_str());
+			bufp += snprintf(bufp, bufEnd - bufp, "\"%s\" ", item->data[j].c_str());
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < textures.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<string> *item = textures[i];
 		typeString = "texture ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -375,12 +394,13 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "\"%s\" ", item->data[j].c_str());
+			bufp += snprintf(bufp, bufEnd - bufp, "\"%s\" ", item->data[j].c_str());
 		ret += buf;
 		ret += string("] ");
 	}
 	for (i = 0; i < spectra.size(); ++i) {
 		char *bufp = buf;
+		*bufp = '\0';
 		ParamSetItem<Spectrum> *item = spectra[i];
 		typeString = "color ";
 		// Print _ParamSetItem_ declaration, determine how many to print
@@ -391,7 +411,7 @@ string ParamSet::ToString() const {
 		ret += string("\"");
 		ret += string(" [");
 		for (j = 0; j < nPrint; ++j)
-			bufp += sprintf(bufp, "%.8g %.8g %.8g ", item->data[j].c[0],
+			bufp += snprintf(bufp, bufEnd - bufp, "%.8g %.8g %.8g ", item->data[j].c[0],
 				item->data[j].c[1], item->data[j].c[2]);
 		ret += buf;
 		ret += string("] ");

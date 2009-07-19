@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -17,6 +17,10 @@
 #include "color.h"
 #include <map>
 using std::map;
+#if (_MSC_VER >= 1400) // NOBOOK
+#include <stdio.h>     // NOBOOK
+#define snprintf _snprintf // NOBOOK
+#endif // NOBOOK
 // ParamSet Macros
 #define ADD_PARAM_TYPE(T, vec) \
 	(vec).push_back(new ParamSetItem<T>(name, (T *)data, nItems))
@@ -97,7 +101,7 @@ public:
 	const string *FindString(const string &,
 		int *nItems) const;
 	void ReportUnused() const;
-	ParamSet::~ParamSet() {
+	~ParamSet() {
 		Clear();
 	}
 	void Clear();
@@ -186,6 +190,8 @@ public:
 		geomParams.ReportUnused();
 		materialParams.ReportUnused();
 	}
+	const ParamSet &GetGeomParams() const { return geomParams; }
+	const ParamSet &GetMaterialParams() const { return materialParams; }
 private:
 	// TextureParams Private Data
 	const ParamSet &geomParams, &materialParams;

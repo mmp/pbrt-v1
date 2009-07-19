@@ -1,6 +1,6 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2005 Matt Pharr and Greg Humphreys
+ * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
  *
  * All Rights Reserved.
  * For educational use only; commercial use expressly forbidden.
@@ -27,7 +27,7 @@ COREDLL bool ParseFile(const char *filename) {
 		yyin = fopen(filename, "r");
 	if (yyin != NULL) {
 		current_file = filename;
-		if (yyin == stdin) current_file = "<stanard input>";
+		if (yyin == stdin) current_file = "<standard input>";
 		line_num = 1;
 		yyparse();
 		if (yyin != stdin) fclose(yyin);

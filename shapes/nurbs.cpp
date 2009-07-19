@@ -307,6 +307,7 @@ extern "C" DLLEXPORT Shape *CreateShape(const Transform &o2w,
 	const float *P = (const float *)params.FindPoint("P", &npts);
 	if (!P) {
 		P = params.FindFloat("Pw", &npts);
+		npts /= 4;
 		if (!P) return NULL;
 		isHomogeneous = true;
 	}

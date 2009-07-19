@@ -1,7 +1,7 @@
 /*
  * exrtoiff.cpp
  *
- * $Id: exrtotiff.cpp,v 1.1 2004/05/14 01:23:50 mmp Exp $
+ * $Id: exrtotiff.cpp 1063 2004-05-14 01:23:50Z mmp $
  */
 
 #include <stdio.h>
