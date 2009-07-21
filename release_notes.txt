@@ -1,5 +1,5 @@
 
-pbrt Release 1.03 (24 June 2007)
+pbrt Release 1.04 (19 July 2009)
 
 -------------
 Installation:
@@ -27,16 +27,6 @@ this license.
 Thanks in particular to John Danks and Kevin Egan for many bug reports and
 patches that went into this release.
 
---------------------
-** Important note **
---------------------
-
-This release includes a fix to bug 45, which leads to different results
-being returned from FresnelBlend BSDFs.  In particular, the TT model (and
-any other scene that uses this BSDF) will render differently in 1.03 than
-it did in 1.02.  However, the 1.03 behavior should match the 1.01
-behavior.  (And is believed to finally be fully correct.)
-
 --------------
 Other Changes:
 --------------
@@ -49,8 +39,47 @@ http://pbrt.org/downloads.php already included.
 Bug Fixes: 
 ----------
 
+TODO: update doxygen
+
+The following bugs (many from the pbrt bug database at
+http://pbrt.org/bugtracker) are fixed in this release.  Thanks in
+particular to Kevin Egan for reporting many of these and often including
+patches!
+
+- Copyright notices in source code files updated to reflect GPL licensing
+  change actually done in 1.03 release
+
+- Bug #69: importance sampling bugs in Anisotropic, Blinn, and Lafortune
+  BxDFs fixed
+
+- Bug #7: depth of field lens position calculation wrong
+
+- Bugs #38, #49: kd-tree traversal may produce wrong results when ray
+  origin lies on splitting plane
+
+- Bug #82: SampleHG() function for importance sampling Henyey-Greenstein
+  phase function was incorrect
+
+- Bug #85: added check for correct number of uv texture coordinates with
+  triangle meshes, when they are provided
+
+- Bug #61: path integrator doesn't get specular reflections of infinite
+  area lights 
+
+- Bug #80: photonmap.cpp calls kdtree.h - NodeData expressions invalid.
+  (MSVC safe runtime being overly-conservative with STL vector abuse)
+
+- Fixed null pointer dereference in infinite light source Power() calculation
+  when radianceMap is NULL
+
+- Exphoton map final gathering code had a variable
+
+-------------------
+Previous Bug Fixes: 
+-------------------
+
 The following bugs from the pbrt bug database (http://pbrt.org/bugtracker)
-are fixed in this release.
+Were fixed in the 1.03 release.
 
 - Bug #77: Fix the Mie scattering phase functions to actually integrate to
 one...

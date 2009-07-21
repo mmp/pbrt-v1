@@ -1,11 +1,24 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
- *
- * All Rights Reserved.
- * For educational use only; commercial use expressly forbidden.
- * NO WARRANTY, express or implied, for this software.
- * (See file License.txt for complete license)
+    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+
+    This file is part of pbrt.
+
+    pbrt is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.  Note that the text contents of
+    the book "Physically Based Rendering" are *not* licensed under the
+    GNU GPL.
+
+    pbrt is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
  */
 
 // kdtree.cpp*
@@ -326,7 +339,8 @@ bool KdTreeAccel::Intersect(const Ray &ray,
 				invDir[axis];
 			// Get node children pointers for ray
 			const KdAccelNode *firstChild, *secondChild;
-			int belowFirst = ray.o[axis] <= node->SplitPos();
+			int belowFirst = (ray.o[axis] <= node->SplitPos()) ||
+			                 (ray.o[axis] == node->SplitPos() && ray.d[axis] < 0);
 			if (belowFirst) {
 				firstChild = node + 1;
 				secondChild = &nodes[node->aboveChild];
@@ -336,7 +350,7 @@ bool KdTreeAccel::Intersect(const Ray &ray,
 				secondChild = node + 1;
 			}
 			// Advance to next child node, possibly enqueue other child
-			if (tplane > tmax || tplane < 0)
+			if (tplane > tmax || tplane <= 0)
 				node = firstChild;
 			else if (tplane < tmin)
 				node = secondChild;
@@ -444,7 +458,8 @@ bool KdTreeAccel::IntersectP(const Ray &ray) const {
 				invDir[axis];
 			// Get node children pointers for ray
 			const KdAccelNode *firstChild, *secondChild;
-			int belowFirst = ray.o[axis] <= node->SplitPos();
+			int belowFirst = (ray.o[axis] <= node->SplitPos()) ||
+			                 (ray.o[axis] == node->SplitPos() && ray.d[axis] < 0);
 			if (belowFirst) {
 				firstChild = node + 1;
 				secondChild = &nodes[node->aboveChild];
@@ -454,7 +469,7 @@ bool KdTreeAccel::IntersectP(const Ray &ray) const {
 				secondChild = node + 1;
 			}
 			// Advance to next child node, possibly enqueue other child
-			if (tplane > tmax || tplane < 0)
+			if (tplane > tmax || tplane <= 0)
 				node = firstChild;
 			else if (tplane < tmin)
 				node = secondChild;

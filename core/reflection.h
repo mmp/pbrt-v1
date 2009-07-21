@@ -1,11 +1,24 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
- *
- * All Rights Reserved.
- * For educational use only; commercial use expressly forbidden.
- * NO WARRANTY, express or implied, for this software.
- * (See file License.txt for complete license)
+    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+
+    This file is part of pbrt.
+
+    pbrt is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.  Note that the text contents of
+    the book "Physically Based Rendering" are *not* licensed under the
+    GNU GPL.
+
+    pbrt is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
  */
 
 #ifndef PBRT_REFLECTION_H
@@ -317,7 +330,7 @@ public:
 		float costhetah = fabsf(CosTheta(wh));
 		float e = (ex * wh.x * wh.x + ey * wh.y * wh.y) /
 			(1.f - costhetah * costhetah);
-		return sqrtf((ex+2)*(ey+2)) * INV_TWOPI * powf(costhetah, e);
+		return sqrtf((ex+1)*(ey+1)) * INV_TWOPI * powf(costhetah, e);
 	}
 	void Sample_f(const Vector &wo, Vector *wi, float u1, float u2, float *pdf) const;
 	float Pdf(const Vector &wo, const Vector &wi) const;
@@ -332,9 +345,6 @@ public:
 	          const Spectrum *x, const Spectrum *y, const Spectrum *z,
 			  const Spectrum *e, BxDFType t);
 	Spectrum f(const Vector &wo, const Vector &wi) const;
-	Spectrum Sample_f(const Vector &wi, Vector *sampled_f,
-		float u1, float u2, float *pdf) const;
-	float Pdf(const Vector &wi, const Vector &wo) const;
 private:
 	// Lafortune Private Data
 	Spectrum R;

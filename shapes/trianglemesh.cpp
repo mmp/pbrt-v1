@@ -1,11 +1,24 @@
 
 /*
- * pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys
- *
- * All Rights Reserved.
- * For educational use only; commercial use expressly forbidden.
- * NO WARRANTY, express or implied, for this software.
- * (See file License.txt for complete license)
+    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+
+    This file is part of pbrt.
+
+    pbrt is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.  Note that the text contents of
+    the book "Physically Based Rendering" are *not* licensed under the
+    GNU GPL.
+
+    pbrt is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
  */
 
 // trianglemesh.cpp*
@@ -342,6 +355,16 @@ extern "C" DLLEXPORT Shape *CreateShape(const Transform &o2w,
 	const float *uvs = params.FindFloat("uv", &nuvi);
 	if (!uvs) uvs = params.FindFloat("st", &nuvi);
 	// XXX should complain if uvs aren't an array of 2...
+	if (uvs) {
+		if (nuvi < 2 * npi) {
+			Error("Not enough of \"uv\"s for triangle mesh.  Expencted %d, "
+			      "found %d.  Discarding.\n", 2*npi, nuvi);
+			uvs = NULL;
+		}
+		else if (nuvi > 2 * npi)
+			Warning("More \"uv\"s provided than will be used for triangle "
+			        "mesh.  (%d expcted, %d found)\n", 2*npi, nuvi);
+	}
 	if (!vi || !P) return NULL;
 	const Vector *S = params.FindVector("S", &nsi);
 	if (S && nsi != npi) {
