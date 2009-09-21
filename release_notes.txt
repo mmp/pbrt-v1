@@ -5,14 +5,18 @@ pbrt Release 1.04 (19 July 2009)
 Installation:
 -------------
 
-The pbrtsrc-1.03.tar.gz and pbrtsrc-1.03.zip files include updated source
+The pbrtsrc-1.04.tar.gz and pbrtsrc-1.04.zip files include updated source
 code to the pbrt rendering system described in "Physically Based Rendering:
 From Theory to Implementation" by Matt Pharr and Greg Humphreys.  The zip
-file includes project files, source code, and OpenEXR libraries for bulding
-the system under Windows, and the tar.gz file includes makefiles and source
-code for building under Linux, OSX, FreeBSD, and OpenBSD.  (For these
-platforms, you are expected to install OpenEXR on your system yourself;
-information about how to do this is provided during the build process.)
+file includes project files and source code, for bulding the system under
+Windows, and the tar.gz file includes makefiles and source code for
+building under Linux, OSX, FreeBSD, and OpenBSD.  (For all of these these
+platforms, you are expected to install OpenEXR on your system yourself; for
+non-Windows systems, information about how to do this is provided during
+the build process.  For windows systems, you'll need to download OpenEXR
+from http://openexr.com, follow installation directions from there, and
+then update the solution files to be able to find the directories where the
+OpenEXR libraries and headers are installed.)
 
 See page 1017 of the PBR book for informaton about building and installing
 under Windows and page 1018 for information about building and installing
@@ -24,27 +28,22 @@ COPYING.txt for information about the license agreement under which this
 software is provided.  Your use of this software constitutes acceptance of
 this license.
 
-Thanks in particular to John Danks and Kevin Egan for many bug reports and
-patches that went into this release.
+Thanks in particular to Kevin Egan for many bug reports and patches that
+went into this release.
 
 --------------
 Other Changes:
 --------------
 
-This release (like the 1.02 release, though it wasn't mentioned in the
-release notes for that release), has the author-supplied plugins from
+This release has the author-supplied plugins from
 http://pbrt.org/downloads.php already included.
 
 ----------
 Bug Fixes: 
 ----------
 
-TODO: update doxygen
-
 The following bugs (many from the pbrt bug database at
-http://pbrt.org/bugtracker) are fixed in this release.  Thanks in
-particular to Kevin Egan for reporting many of these and often including
-patches!
+http://pbrt.org/bugtracker) are fixed in this release.  
 
 - Copyright notices in source code files updated to reflect GPL licensing
   change actually done in 1.03 release
@@ -70,9 +69,12 @@ patches!
   (MSVC safe runtime being overly-conservative with STL vector abuse)
 
 - Fixed null pointer dereference in infinite light source Power() calculation
-  when radianceMap is NULL
+  when radianceMap is NULL.
 
-- Exphoton map final gathering code had a variable
+- Exphoton map final gathering code had a variable that shadowed the
+  variable 'n' that contained the surface normal, which led to a
+  nonsensical dot product term, which led to noisy and incorrect results
+  (Thanks to Thomas de Bodt for finding this!)
 
 -------------------
 Previous Bug Fixes: 
