@@ -32,10 +32,12 @@ public:
 	Spectrum(float v = 0.f) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = v;
+		Assert(!IsNaN());
 	}
 	Spectrum(float cs[COLOR_SAMPLES]) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] = cs[i];
+		Assert(!IsNaN());
 	}
 	friend ostream &operator<<(ostream &, const Spectrum &);
 	Spectrum &operator+=(const Spectrum &s2) {
@@ -73,12 +75,14 @@ public:
 		return *this;
 	}
 	Spectrum operator*(float a) const {
+		Assert(!isnan(a));
 		Spectrum ret = *this;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			ret.c[i] *= a;
 		return ret;
 	}
 	Spectrum &operator*=(float a) {
+		Assert(!isnan(a));
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] *= a;
 		return *this;
@@ -88,6 +92,7 @@ public:
 		return s * a;
 	}
 	Spectrum operator/(float a) const {
+	        Assert(a != 0.);
 		return *this * (1.f / a);
 	}
 	Spectrum &operator/=(float a) {
@@ -97,6 +102,7 @@ public:
 		return *this;
 	}
 	void AddWeighted(float w, const Spectrum &s) {
+		Assert(!isnan(w));
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			c[i] += w * s.c[i];
 	}
@@ -117,12 +123,14 @@ public:
 		Spectrum ret;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			ret.c[i] = sqrtf(c[i]);
+		Assert(!ret.IsNaN());
 		return ret;
 	}
 	Spectrum Pow(const Spectrum &e) const {
 		Spectrum ret;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			ret.c[i] = c[i] > 0 ? powf(c[i], e.c[i]) : 0.f;
+		Assert(!ret.IsNaN());
 		return ret;
 	}
 	Spectrum operator-() const {
@@ -135,6 +143,7 @@ public:
 		Spectrum ret;
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
 			ret.c[i] = expf(s.c[i]);
+		Assert(!ret.IsNaN());
 		return ret;
 	}
 	Spectrum Clamp(float low = 0.f,

@@ -12,7 +12,7 @@ endif
 
 EXRINCLUDE=-I/usr/local/include/OpenEXR
 EXRLIBDIR=-L/usr/local/lib
-EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lImath -lIex -lHalf -Bdynamic -lz
+EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lIlmThread -lImath -lIex -lHalf -Bdynamic -lz
 ifeq ($(ARCH),Linux)
   EXRLIBS += -lpthread
 endif
@@ -40,7 +40,7 @@ ifeq ($(ARCH), Darwin)
   SHARED_LDFLAGS = -flat_namespace -undefined suppress -bundle -noprebind
   LRT_LDFLAGS=$(OPT) # -L/sw/lib
   INCLUDE += -I/sw/include
-  WARN += -Wno-long-double
+  #WARN += -Wno-long-double
 endif
 
 ACCELERATORS = grid kdtree

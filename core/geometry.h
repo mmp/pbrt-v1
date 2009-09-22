@@ -32,6 +32,7 @@ public:
 	// Vector Public Methods
 	Vector(float _x=0, float _y=0, float _z=0)
 		: x(_x), y(_y), z(_z) {
+		Assert(!isnan(x+y+z));
 	}
 	explicit Vector(const Point &p);
 	Vector operator+(const Vector &v) const {
@@ -96,6 +97,7 @@ public:
 	// Point Methods
 	Point(float _x=0, float _y=0, float _z=0)
 		: x(_x), y(_y), z(_z) {
+		Assert(!isnan(x+y+z));
 	}
 	Point operator+(const Vector &v) const {
 		return Point(x + v.x, y + v.y, z + v.z);
@@ -149,7 +151,9 @@ class COREDLL Normal {
 public:
 	// Normal Methods
 	Normal(float _x=0, float _y=0, float _z=0)
-		: x(_x), y(_y), z(_z) {}
+		: x(_x), y(_y), z(_z) {
+		Assert(!isnan(x+y+z));
+	}
 	Normal operator-() const {
 		return Normal(-x, -y, -z);
 	}
@@ -284,6 +288,7 @@ public:
 // Geometry Inline Functions
 inline Vector::Vector(const Point &p)
 	: x(p.x), y(p.y), z(p.z) {
+	Assert(!isnan(x+y+z));
 }
 inline ostream &operator<<(ostream &os, const Vector &v) {
 	os << v.x << ", " << v.y << ", " << v.z;

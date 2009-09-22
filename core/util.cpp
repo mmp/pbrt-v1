@@ -65,7 +65,7 @@ static void processError(const char *format, va_list args,
 			fprintf(stderr, "\tLine %d, file %s\n", line_num,
 				current_file.c_str());
 		}
-		exit(1);
+		abort();
 	}
 #ifndef WIN32
 	free(errorBuf);

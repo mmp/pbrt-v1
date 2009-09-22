@@ -83,7 +83,7 @@ Spectrum WhittedIntegrator::Li(const Scene *scene,
 			// Trace rays for specular reflection and refraction
 			Spectrum f = bsdf->Sample_f(wo, &wi,
 				BxDFType(BSDF_REFLECTION | BSDF_SPECULAR));
-			if (!f.Black()) {
+			if (!f.Black() && AbsDot(wi, n) > 0.f) {
 				// Compute ray differential _rd_ for specular reflection
 				RayDifferential rd(p, wi);
 				rd.hasDifferentials = true;
@@ -107,7 +107,7 @@ Spectrum WhittedIntegrator::Li(const Scene *scene,
 			}
 			f = bsdf->Sample_f(wo, &wi,
 				BxDFType(BSDF_TRANSMISSION | BSDF_SPECULAR));
-			if (!f.Black()) {
+			if (!f.Black() && AbsDot(wi, n) > 0.f) {
 				// Compute ray differential _rd_ for specular transmission
 				RayDifferential rd(p, wi);
 				rd.hasDifferentials = true;

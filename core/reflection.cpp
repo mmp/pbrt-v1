@@ -84,7 +84,7 @@ Spectrum FresnelDielectric::Evaluate(float cosi) const {
 		swap(ei, et);
 	// Compute _sint_ using Snell's law
 	float sint = ei/et * sqrtf(max(0.f, 1.f - cosi*cosi));
-	if (sint > 1.) {
+	if (sint >= 1.) {
 		// Handle total internal reflection
 		return 1.;
 	}
@@ -113,7 +113,7 @@ Spectrum SpecularTransmission::Sample_f(const Vector &wo,
 	float eta = ei / et;
 	float sint2 = eta * eta * sini2;
 	// Handle total internal reflection for transmission
-	if (sint2 > 1.) return 0.;
+	if (sint2 >= 1.) return 0.;
 	float cost = sqrtf(max(0.f, 1.f - sint2));
 	if (entering) cost = -cost;
 	float sintOverSini = eta;

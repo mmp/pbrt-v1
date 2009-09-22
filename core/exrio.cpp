@@ -30,6 +30,7 @@
 #include <ImfOutputFile.h>
 #include <ImfChannelList.h>
 #include <ImfFrameBuffer.h>
+#include <ImfRgbaFile.h>
 #include <half.h>
 #include "pbrt.h"
 #include "color.h"
@@ -75,43 +76,21 @@ COREDLL void WriteRGBAImage(const string &name, float *pixels,
 		float *alpha, int xRes, int yRes,
 		int totalXRes, int totalYRes,
 		int xOffset, int yOffset) {
-	Header header(totalXRes, totalYRes);
-	Box2i dataWindow(V2i(xOffset, yOffset), V2i(xOffset + xRes - 1, yOffset + yRes - 1));
-	header.dataWindow() = dataWindow;
-	header.channels().insert("R", Channel (HALF));
-	header.channels().insert("G", Channel (HALF));
-	header.channels().insert("B", Channel (HALF));
-	header.channels().insert("A", Channel (HALF));
+    Rgba *hrgba = new Rgba[xRes * yRes];
+    for (int i = 0; i < xRes * yRes; ++i)
+        hrgba[i] = Rgba(pixels[3*i], pixels[3*i+1], pixels[3*i+2],
+                        alpha ? alpha[i]: 1.f);
 
-	half *hrgb = new half[3 * xRes * yRes];
-	for (int i = 0; i < 3 * xRes * yRes; ++i)
-		hrgb[i] = pixels[i];
-	half *ha = new half[xRes * yRes];
-	for (int i = 0; i < xRes * yRes; ++i)
-		ha[i] = alpha[i];
+    Box2i displayWindow(V2i(0,0), V2i(totalXRes-1, totalYRes-1));
+    Box2i dataWindow(V2i(xOffset, yOffset), V2i(xOffset + xRes - 1, yOffset + yRes - 1));
 
-	hrgb -= 3 * (xOffset + yOffset * xRes);
-	ha -= (xOffset + yOffset * xRes);
-
-	FrameBuffer fb;
-	fb.insert("R", Slice(HALF, (char *)hrgb, 3*sizeof(half),
-		3*xRes*sizeof(half)));
-	fb.insert("G", Slice(HALF, (char *)hrgb+sizeof(half), 3*sizeof(half),
-		3*xRes*sizeof(half)));
-	fb.insert("B", Slice(HALF, (char *)hrgb+2*sizeof(half), 3*sizeof(half),
-		3*xRes*sizeof(half)));
-	fb.insert("A", Slice(HALF, (char *)ha, sizeof(half), xRes*sizeof(half)));
-
-	OutputFile file(name.c_str(), header);
-	file.setFrameBuffer(fb);
-	try {
-		file.writePixels(yRes);
-	}
-	catch (const std::exception &e) {
-		Error("Unable to write image file \"%s\": %s", name.c_str(),
-			e.what());
-	}
-
-	delete[] (hrgb + 3 * (xOffset + yOffset * xRes));
-	delete[] (ha + (xOffset + yOffset * xRes));
+    RgbaOutputFile file(name.c_str(), displayWindow, dataWindow, WRITE_RGBA);
+    file.setFrameBuffer(hrgba - xOffset - yOffset * xRes, 1, xRes);
+    try {
+        file.writePixels(yRes);
+    }
+    catch (const std::exception &e) {
+        Error("Unable to write image file \"%s\": %s", name.c_str(),
+            e.what());
+    }
 }

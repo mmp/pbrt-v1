@@ -36,6 +36,9 @@
 #endif
 #ifdef WIN32
 #include <float.h>
+#include <float.h>
+#define isnan _isnan
+#define isinf(f) (!_finite((f)))
 #endif
 #include <math.h>
 #include <stdlib.h>

@@ -1,11 +1,11 @@
 
-pbrt Release 1.04 (19 July 2009)
+pbrt Release 1.05 (XXX 2009)
 
 -------------
 Installation:
 -------------
 
-The pbrtsrc-1.04.tar.gz and pbrtsrc-1.04.zip files include updated source
+The pbrtsrc-1.05.tar.gz and pbrtsrc-1.05.zip files include updated source
 code to the pbrt rendering system described in "Physically Based Rendering:
 From Theory to Implementation" by Matt Pharr and Greg Humphreys.  The zip
 file includes project files and source code, for bulding the system under
@@ -45,6 +45,27 @@ Bug Fixes:
 The following bugs (many from the pbrt bug database at
 http://pbrt.org/bugtracker) are fixed in this release.  
 
+- For specular refraction, changed the test for total internal reflection
+  from 'if (sint > 1.)' to 'if (sint >= 1.)', thus eliminating a rare case
+  where rays would have NaN direction values, which had a catastrophic
+  performance impact elsewhere in the system.
+
+- Added assertions to check for not-a-number values in Spectrum, Point,
+  Vector, and Normal constructors.
+
+- Replaced WriteEXR function with shorter one that doesn't give valgrind
+  warnings
+
+- Call abort(), not exit(1) for PBRT_ERROR_ABORT level errors, so can more
+  easily catch them in the debugger.
+
+-------------------
+Previous Bug Fixes: 
+-------------------
+
+The following bugs from the pbrt bug database (http://pbrt.org/bugtracker)
+Were fixed in the 1.04 release.
+
 - Copyright notices in source code files updated to reflect GPL licensing
   change actually done in 1.03 release
 
@@ -76,9 +97,9 @@ http://pbrt.org/bugtracker) are fixed in this release.
   nonsensical dot product term, which led to noisy and incorrect results
   (Thanks to Thomas de Bodt for finding this!)
 
--------------------
-Previous Bug Fixes: 
--------------------
+-----------------------------
+Bug fixes in the 1.03 release
+-----------------------------
 
 The following bugs from the pbrt bug database (http://pbrt.org/bugtracker)
 Were fixed in the 1.03 release.
