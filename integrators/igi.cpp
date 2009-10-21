@@ -115,7 +115,7 @@ void IGIIntegrator::Preprocess(const Scene *scene) {
 			float lightPdf;
 			int lNum = Floor2Int(SampleStep1d(lightPower, lightCDF,
 				totalPower, nLights, lightNum[sampOffset], &lightPdf) * nLights);
-			fprintf(stderr, "samp %f -> num %d\n", lightNum[sampOffset], lNum);
+//			fprintf(stderr, "samp %f -> num %d\n", lightNum[sampOffset], lNum);
 			Light *light = scene->lights[lNum];
 			// Sample ray leaving light source
 			RayDifferential ray;
@@ -128,7 +128,7 @@ void IGIIntegrator::Preprocess(const Scene *scene) {
 						&ray, &pdf);
 			if (pdf == 0.f || alpha.Black()) continue;
 			alpha /= pdf * lightPdf;
-			fprintf(stderr, "initial alpha %f, light # %d\n", alpha.y(), lNum);
+//			fprintf(stderr, "initial alpha %f, light # %d\n", alpha.y(), lNum);
 			Intersection isect;
 			int nIntersections = 0;
 			while (scene->Intersect(ray, &isect) && !alpha.Black()) {
@@ -140,7 +140,7 @@ void IGIIntegrator::Preprocess(const Scene *scene) {
 				static StatsCounter vls("IGI Integrator", "Virtual Lights Created"); //NOBOOK
 				++vls; //NOBOOK
 				Spectrum Le = alpha * bsdf->rho(wo) / M_PI;
-				fprintf(stderr, "\tmade light with le y %f\n", Le.y());
+//				fprintf(stderr, "\tmade light with le y %f\n", Le.y());
 				virtualLights[s].push_back(VirtualLight(isect.dg.p, isect.dg.nn, Le));
 				// Sample new ray direction and update weight
 				Vector wi;
@@ -153,11 +153,11 @@ void IGIIntegrator::Preprocess(const Scene *scene) {
 					break;
 				Spectrum anew = alpha * fr * AbsDot(wi, bsdf->dgShading.nn) / pdf;
 				float r = anew.y() / alpha.y();
-				fprintf(stderr, "\tr = %f\n", r);
+//				fprintf(stderr, "\tr = %f\n", r);
 				if (RandomFloat() > r)
 					break;
 				alpha = anew / r;
-				fprintf(stderr, "\tnew alpha %f\n", alpha.y());
+//				fprintf(stderr, "\tnew alpha %f\n", alpha.y());
 				ray = RayDifferential(isect.dg.p, wi);
 			}
 			BSDF::FreeAll();
