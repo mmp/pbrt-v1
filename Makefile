@@ -10,8 +10,8 @@ ifeq ($(ARCH),OpenBSD)
   DLLLIB =
 endif
 
-EXRINCLUDE=-I/usr/local/include/OpenEXR
-EXRLIBDIR=-L/usr/local/lib
+EXRINCLUDE=-I/usr/local/include/OpenEXR -I/opt/local/include/OpenEXR
+EXRLIBDIR=-L/usr/local/lib -L/opt/local/lib
 EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lIlmThread -lImath -lIex -lHalf -Bdynamic -lz
 ifeq ($(ARCH),Linux)
   EXRLIBS += -lpthread
@@ -112,9 +112,12 @@ CORE_HEADERS := $(addprefix core/, $(CORE_HEADERFILES) )
             $(VOLUMES_OBJS) $(ACCELERATORS_OBJS) $(CAMERAS_OBJS) $(FILTERS_OBJS) \
             $(FILM_OBJS) $(TONEMAPS_OBJS) $(SAMPLERS_OBJS) $(TEXTURES_OBJS)
 
-.PHONY: tools exrcheck
+.PHONY: dirs tools exrcheck
 
-default: $(CORE_LIB) $(RENDERER_BINARY) $(INTEGRATORS_DSOS) $(VOLUMES_DSOS) $(FILM_DSOS) $(SHAPES_DSOS) $(MATERIALS_DSOS) $(LIGHTS_DSOS) $(ACCELERATORS_DSOS) $(CAMERAS_DSOS) $(SAMPLERS_DSOS) $(FILTERS_DSOS) $(TONEMAPS_DSOS) $(TEXTURES_DSOS) #tools
+default: dirs $(CORE_LIB) $(RENDERER_BINARY) $(INTEGRATORS_DSOS) $(VOLUMES_DSOS) $(FILM_DSOS) $(SHAPES_DSOS) $(MATERIALS_DSOS) $(LIGHTS_DSOS) $(ACCELERATORS_DSOS) $(CAMERAS_DSOS) $(SAMPLERS_DSOS) $(FILTERS_DSOS) $(TONEMAPS_DSOS) $(TEXTURES_DSOS) #tools
+
+dirs:
+	/bin/mkdir -p bin objs
 
 tools: $(CORE_LIB)
 	(cd tools && $(MAKE))
