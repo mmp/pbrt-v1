@@ -207,7 +207,7 @@ class VolumeIntegrator;
 #ifndef INFINITY
 #define INFINITY FLT_MAX
 #endif
-#define PBRT_VERSION 1.03
+#define PBRT_VERSION 1.05
 #define RAY_EPSILON 1e-3f
 #define COLOR_SAMPLES 3
 // Global Function Declarations
