@@ -60,11 +60,8 @@ public:
 		Point ps;
 		Ray r(p,
 		      UniformSampleCone(u1, u2, cosThetaMax, wcX, wcY, wc));
-		if (!Intersect(r, &thit, &dgSphere)) {
-			ps = Pcenter - radius * wc;
-		} else {
-			ps = r(thit);
-		}
+		if (!Intersect(r, &thit, &dgSphere))
+			thit = Dot(Pcenter - p, Normalize(r.d));
 		*ns = Normal(Normalize(ps - Pcenter));
 		if (reverseOrientation) *ns *= -1.f;
 		return ps;
