@@ -28,7 +28,7 @@
 #include "sampling.h"
 #include "shape.h"
 // Checkerboard2D Private Types
-enum { NONE, SUPERSAMPLE, CLOSEDFORM } aaMethod;
+enum AAMethod { NONE, SUPERSAMPLE, CLOSEDFORM };
 // CheckerboardTexture Declarations
 template <class T> class Checkerboard2D : public Texture<T> {
 public:
@@ -125,6 +125,7 @@ private:
 	// Checkerboard2D Private Data
 	Reference<Texture<T> > tex1, tex2;
 	TextureMapping2D *mapping;
+	AAMethod aaMethod;
 };
 template <class T> class Checkerboard3D : public Texture<T> {
 public:
