@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	// Print welcome banner
 	printf("pbrt version %1.3f of %s at %s\n",
 	       PBRT_VERSION, __DATE__, __TIME__);
-	printf("Copyright (c)1998-2007 Matt Pharr and "
+	printf("Copyright (c)1998-2010 Matt Pharr and "
 	       "Greg Humphreys.\n");
 	printf("The source code to pbrt (but *not* the contents of the book) is\n");
 	printf("covered by the GNU General Public License.  See the file COPYING.txt\n");
