@@ -389,6 +389,7 @@ Spectrum BSDF::Sample_f(const Vector &woW, Vector *wiW,
 	int matchingComps = NumComponents(flags);
 	if (matchingComps == 0) {
 		*pdf = 0.f;
+		if (sampledType) *sampledType = BxDFType(0);
 		return Spectrum(0.f);
 	}
 	int which = min(Floor2Int(u3 * matchingComps),
@@ -407,7 +408,10 @@ Spectrum BSDF::Sample_f(const Vector &woW, Vector *wiW,
 	Vector wo = WorldToLocal(woW);
 	*pdf = 0.f;
 	Spectrum f = bxdf->Sample_f(wo, &wi, u1, u2, pdf);
-	if (*pdf == 0.f) return 0.f;
+	if (*pdf == 0.f) {
+		if (sampledType) *sampledType = BxDFType(0);
+		return 0.f;
+	}
 	if (sampledType) *sampledType = bxdf->type;
 	*wiW = LocalToWorld(wi);
 	// Compute overall PDF with all matching _BxDF_s
