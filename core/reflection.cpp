@@ -164,7 +164,9 @@ Spectrum Microfacet::f(const Vector &wo,
                        const Vector &wi) const {
 	float cosThetaO = fabsf(CosTheta(wo));
 	float cosThetaI = fabsf(CosTheta(wi));
-	Vector wh = Normalize(wi + wo);
+	Vector wh = wi + wo;
+	if (wh.x == 0. && wh.y == 0. && wh.z == 0.) return Spectrum(0.f);
+	wh = Normalize(wh);
 	float cosThetaH = Dot(wi, wh);
 	Spectrum F = fresnel->Evaluate(cosThetaH);
 	return R * distribution->D(wh) * G(wo, wi, wh) * F /
@@ -251,7 +253,7 @@ void Blinn::Sample_f(const Vector &wo, Vector *wi,
 	// Compute incident direction by reflecting about $\wh$
 	*wi = -wo + 2.f * Dot(wo, H) * H;
 	// Compute PDF for \wi from Blinn distribution
-	float blinn_pdf = ((exponent + 2.f) *
+	float blinn_pdf = ((exponent + 1.f) *
 	                   powf(costheta, exponent)) /
 		(2.f * M_PI * 4.f * Dot(wo, H));
 	*pdf = blinn_pdf;
@@ -260,7 +262,7 @@ float Blinn::Pdf(const Vector &wo, const Vector &wi) const {
 	Vector H = Normalize(wo + wi);
 	float costheta = fabsf(H.z);
 	// Compute PDF for \wi from Blinn distribution
-	float blinn_pdf = ((exponent + 2.f) *
+	float blinn_pdf = ((exponent + 1.f) *
 	                   powf(costheta, exponent)) /
 		(2.f * M_PI * 4.f * Dot(wo, H));
 	return blinn_pdf;
@@ -290,8 +292,14 @@ void Anisotropic::Sample_f(const Vector &wo, Vector *wi,
 	// Compute incident direction by reflecting about $\wh$
 	*wi = -wo + 2.f * Dot(wo, H) * H;
 	// Compute PDF for \wi from Anisotropic distribution
-	float anisotropic_pdf = D(H) / (4.f * Dot(wo, H));
-	if (Dot(wo, H) < 0.f) anisotropic_pdf = 0.f;
+	float costhetah = fabsf(CosTheta(H));
+	float ds = 1.f - costhetah * costhetah;
+	float anisotropic_pdf = 0.f;
+	if (ds > 0.f && Dot(wo, H) > 0.f) {
+		float e = (ex * H.x * H.x + ey * H.y * H.y) / ds;
+		float d = sqrtf((ex+1.f) * (ey+1.f)) * INV_TWOPI * powf(costhetah, e);
+		anisotropic_pdf = d / (4.f * Dot(wo, H));
+	}
 	*pdf = anisotropic_pdf;
 }
 void Anisotropic::sampleFirstQuadrant(float u1, float u2,
@@ -309,8 +317,14 @@ float Anisotropic::Pdf(const Vector &wo,
 		const Vector &wi) const {
 	Vector H = Normalize(wo + wi);
 	// Compute PDF for \wi from Anisotropic distribution
-	float anisotropic_pdf = D(H) / (4.f * Dot(wo, H));
-	if (Dot(wo, H) < 0.f) anisotropic_pdf = 0.f;
+	float costhetah = fabsf(CosTheta(H));
+	float ds = 1.f - costhetah * costhetah;
+	float anisotropic_pdf = 0.f;
+	if (ds > 0.f && Dot(wo, H) > 0.f) {
+		float e = (ex * H.x * H.x + ey * H.y * H.y) / ds;
+		float d = sqrtf((ex+1.f) * (ey+1.f)) * INV_TWOPI * powf(costhetah, e);
+		anisotropic_pdf = d / (4.f * Dot(wo, H));
+	}
 	return anisotropic_pdf;
 }
 Spectrum FresnelBlend::Sample_f(const Vector &wo,
