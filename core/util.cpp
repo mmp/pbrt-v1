@@ -373,17 +373,10 @@ COREDLL unsigned long genrand_int32(void)
 
 	return y;
 }
-/* generates a random number on [0,1]-real-interval */
-COREDLL float genrand_real1(void)
-{
-	return genrand_int32()*((float)1.0/(float)4294967295.0);
-	/* divided by 2^32-1 */
-}
 /* generates a random number on [0,1)-real-interval */
 COREDLL float genrand_real2(void)
 {
-	return genrand_int32()*((float)1.0/(float)4294967296.0);
-	/* divided by 2^32 */
+	return (RandomUInt() & 0xffffff) / float(1 << 24);
 }
 // Memory Allocation Functions
 COREDLL void *AllocAligned(size_t size) {
