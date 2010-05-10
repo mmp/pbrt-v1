@@ -42,8 +42,9 @@ struct Distribution1D {
 	}
 	float Sample(float u, float *pdf) {
 		// Find surrounding cdf segments
-		float *ptr = std::lower_bound(cdf, cdf+count+1, u);
-		int offset = (int) (ptr-cdf-1);
+		float *ptr = std::upper_bound(cdf, cdf+count+1, u);
+		int offset = max(0, (int) (ptr-cdf-1));
+		Assert(u >= cdf[offset] && u < cdf[offset+1]);
 		// Return offset along current cdf segment
 		u = (u - cdf[offset]) / (cdf[offset+1] - cdf[offset]);
 		*pdf = func[offset] * invFuncInt;
