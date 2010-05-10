@@ -157,10 +157,15 @@ Spectrum InfiniteAreaLightIS::Sample_L(const Point &p, float u1,
 	float fu = uDistrib->Sample(u1, &pdfs[0]);
 	int u = Clamp(Float2Int(fu), 0, uDistrib->count-1);
 	float fv = vDistribs[u]->Sample(u2, &pdfs[1]);
+	if (pdfs[0] == 0.f || pdfs[1] == 0.f) {
+		*pdf = 0.f;
+		return Spectrum(0.f);
+	}
 	// Convert sample point to direction on the unit sphere
 	float theta = fv * vDistribs[u]->invCount * M_PI;
 	float phi = fu * uDistrib->invCount * 2.f * M_PI;
 	float costheta = cos(theta), sintheta = sin(theta);
+	if (sintheta == 0.f) return 0.f;
 	float sinphi = sin(phi), cosphi = cos(phi);
 	*wi = LightToWorld(Vector(sintheta * cosphi, sintheta * sinphi,
 	                          costheta));
