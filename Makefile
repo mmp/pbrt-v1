@@ -10,8 +10,8 @@ ifeq ($(ARCH),OpenBSD)
   DLLLIB =
 endif
 
-EXRINCLUDE=-I/usr/local/include/OpenEXR
-EXRLIBDIR=-L/usr/local/lib
+EXRINCLUDE=-I/usr/local/include/OpenEXR -I/opt/local/include/OpenEXR
+EXRLIBDIR=-L/usr/local/lib -L/opt/local/lib
 EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lIlmThread -lImath -lIex -lHalf -Bdynamic -lz
 ifeq ($(ARCH),Linux)
   EXRLIBS += -lpthread
@@ -37,7 +37,7 @@ LRT_LDFLAGS=-rdynamic $(OPT)
 
 ifeq ($(ARCH), Darwin)
   OS_VERSION = $(shell uname -r)
-  SHARED_LDFLAGS = -flat_namespace -undefined suppress -bundle -noprebind
+  SHARED_LDFLAGS = -flat_namespace -undefined suppress -bundle 
   LRT_LDFLAGS=$(OPT) # -L/sw/lib
   INCLUDE += -I/sw/include
   #WARN += -Wno-long-double
