@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -42,8 +42,9 @@ struct Distribution1D {
 	}
 	float Sample(float u, float *pdf) {
 		// Find surrounding cdf segments
-		float *ptr = std::lower_bound(cdf, cdf+count+1, u);
-		int offset = (int) (ptr-cdf-1);
+		float *ptr = std::upper_bound(cdf, cdf+count+1, u);
+		int offset = max(0, (int) (ptr-cdf-1));
+		Assert(u >= cdf[offset] && u < cdf[offset+1]);
 		// Return offset along current cdf segment
 		u = (u - cdf[offset]) / (cdf[offset+1] - cdf[offset]);
 		*pdf = func[offset] * invFuncInt;
@@ -156,10 +157,15 @@ Spectrum InfiniteAreaLightIS::Sample_L(const Point &p, float u1,
 	float fu = uDistrib->Sample(u1, &pdfs[0]);
 	int u = Clamp(Float2Int(fu), 0, uDistrib->count-1);
 	float fv = vDistribs[u]->Sample(u2, &pdfs[1]);
+	if (pdfs[0] == 0.f || pdfs[1] == 0.f) {
+		*pdf = 0.f;
+		return Spectrum(0.f);
+	}
 	// Convert sample point to direction on the unit sphere
 	float theta = fv * vDistribs[u]->invCount * M_PI;
 	float phi = fu * uDistrib->invCount * 2.f * M_PI;
 	float costheta = cos(theta), sintheta = sin(theta);
+	if (sintheta == 0.f) return 0.f;
 	float sinphi = sin(phi), cosphi = cos(phi);
 	*wi = LightToWorld(Vector(sintheta * cosphi, sintheta * sinphi,
 	                          costheta));

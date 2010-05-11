@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -84,9 +84,9 @@ COREDLL void WriteRGBAImage(const string &name, float *pixels,
     Box2i displayWindow(V2i(0,0), V2i(totalXRes-1, totalYRes-1));
     Box2i dataWindow(V2i(xOffset, yOffset), V2i(xOffset + xRes - 1, yOffset + yRes - 1));
 
-    RgbaOutputFile file(name.c_str(), displayWindow, dataWindow, WRITE_RGBA);
-    file.setFrameBuffer(hrgba - xOffset - yOffset * xRes, 1, xRes);
     try {
+        RgbaOutputFile file(name.c_str(), displayWindow, dataWindow, WRITE_RGBA);
+        file.setFrameBuffer(hrgba - xOffset - yOffset * xRes, 1, xRes);
         file.writePixels(yRes);
     }
     catch (const std::exception &e) {

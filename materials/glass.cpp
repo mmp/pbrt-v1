@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -50,10 +50,10 @@ BSDF *Glass::GetBSDF(const DifferentialGeometry &dgGeom, const DifferentialGeome
 		Bump(bumpMap, dgGeom, dgShading, &dgs);
 	else
 		dgs = dgShading;
-	BSDF *bsdf = BSDF_ALLOC(BSDF)(dgs, dgGeom.nn);
+	float ior = index->Evaluate(dgs);
+	BSDF *bsdf = BSDF_ALLOC(BSDF)(dgs, dgGeom.nn, ior);
 	Spectrum R = Kr->Evaluate(dgs).Clamp();
 	Spectrum T = Kt->Evaluate(dgs).Clamp();
-	float ior = index->Evaluate(dgs);
 	if (!R.Black())
 		bsdf->Add(BSDF_ALLOC(SpecularReflection)(R,
 			BSDF_ALLOC(FresnelDielectric)(1., ior)));

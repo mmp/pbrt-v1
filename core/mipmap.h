@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -249,7 +249,7 @@ T MIPMap<T>::Lookup(float s, float t, float ds0, float dt0,
 	float majorLength = sqrtf(ds0*ds0 + dt0*dt0);
 	float minorLength = sqrtf(ds1*ds1 + dt1*dt1);
 	// Clamp ellipse eccentricity if too large
-	if (minorLength * maxAnisotropy < majorLength) {
+	if (minorLength * maxAnisotropy < majorLength && minorLength > 0.f) {
 		float scale = majorLength /
 		              (minorLength * maxAnisotropy);
 		ds1 *= scale;

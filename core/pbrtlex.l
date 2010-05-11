@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -92,7 +92,7 @@ void include_pop(void)
 }
 %}
 %option nounput
-WHITESPACE [ \t\0xa]+
+WHITESPACE [ \t\r]+
 NUMBER [-+]?([0-9]+|(([0-9]+\.[0-9]*)|(\.[0-9]+)))([eE][-+]?[0-9]+)?
 IDENT [a-zA-Z_][a-zA-Z_0-9]*
 %x STR COMMENT INCL INCL_FILE

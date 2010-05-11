@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -339,8 +339,8 @@ bool KdTreeAccel::Intersect(const Ray &ray,
 				invDir[axis];
 			// Get node children pointers for ray
 			const KdAccelNode *firstChild, *secondChild;
-			int belowFirst = (ray.o[axis] <= node->SplitPos()) ||
-			                 (ray.o[axis] == node->SplitPos() && ray.d[axis] < 0);
+			int belowFirst = (ray.o[axis] <  node->SplitPos()) ||
+					 (ray.o[axis] == node->SplitPos() && ray.d[axis] >= 0);
 			if (belowFirst) {
 				firstChild = node + 1;
 				secondChild = &nodes[node->aboveChild];
@@ -458,8 +458,8 @@ bool KdTreeAccel::IntersectP(const Ray &ray) const {
 				invDir[axis];
 			// Get node children pointers for ray
 			const KdAccelNode *firstChild, *secondChild;
-			int belowFirst = (ray.o[axis] <= node->SplitPos()) ||
-			                 (ray.o[axis] == node->SplitPos() && ray.d[axis] < 0);
+			int belowFirst = (ray.o[axis] <  node->SplitPos()) ||
+					 (ray.o[axis] == node->SplitPos() && ray.d[axis] >= 0);
 			if (belowFirst) {
 				firstChild = node + 1;
 				secondChild = &nodes[node->aboveChild];

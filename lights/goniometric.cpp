@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -46,7 +46,7 @@ public:
 	}
 	Spectrum Power(const Scene *) const {
 		return 4.f * M_PI * Intensity *
-			mipmap->Lookup(.5f, .5f, .5f);
+			(mipmap ? mipmap->Lookup(.5f, .5f, .5f) : Spectrum(1.f));
 	}
 	Spectrum Sample_L(const Point &P, float u1, float u2, Vector *wo,
 		float *pdf, VisibilityTester *visibility) const;

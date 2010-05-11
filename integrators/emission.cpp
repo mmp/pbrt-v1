@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -62,7 +62,7 @@ Spectrum EmissionIntegrator::Li(const Scene *scene,
 		float *alpha) const {
 	VolumeRegion *vr = scene->volumeRegion;
 	float t0, t1;
-	if (!vr || !vr->IntersectP(ray, &t0, &t1)) return 0.f;
+	if (!vr || !vr->IntersectP(ray, &t0, &t1) || (t1-t0) == 0.f) return 0.f;
 	// Do emission-only volume integration in _vr_
 	Spectrum Lv(0.);
 	// Prepare for volume integration stepping

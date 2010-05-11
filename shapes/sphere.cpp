@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -60,11 +60,8 @@ public:
 		Point ps;
 		Ray r(p,
 		      UniformSampleCone(u1, u2, cosThetaMax, wcX, wcY, wc));
-		if (!Intersect(r, &thit, &dgSphere)) {
-			ps = Pcenter - radius * wc;
-		} else {
-			ps = r(thit);
-		}
+		if (!Intersect(r, &thit, &dgSphere))
+			thit = Dot(Pcenter - p, Normalize(r.d));
 		*ns = Normal(Normalize(ps - Pcenter));
 		if (reverseOrientation) *ns *= -1.f;
 		return ps;
@@ -132,7 +129,8 @@ bool Sphere::Intersect(const Ray &r, float *tHit,
 	phi = atan2f(phit.y, phit.x);
 	if (phi < 0.) phi += 2.f*M_PI;
 	// Test sphere intersection against clipping parameters
-	if (phit.z < zmin || phit.z > zmax || phi > phiMax) {
+	if ((zmin > -radius && phit.z < zmin) || (zmax < radius && phit.z > zmax) ||
+		phi > phiMax) {
 		if (thit == t1) return false;
 		if (t1 > ray.maxt) return false;
 		thit = t1;
@@ -145,7 +143,7 @@ bool Sphere::Intersect(const Ray &r, float *tHit,
 	}
 	// Find parametric representation of sphere hit
 	float u = phi / phiMax;
-	float theta = acosf(phit.z / radius);
+	float theta = acosf(Clamp(phit.z / radius, -1.f, 1.f));
 	float v = (theta - thetaMin) / (thetaMax - thetaMin);
 	// Compute sphere \dpdu and \dpdv
 	float cosphi, sinphi;
@@ -235,7 +233,8 @@ bool Sphere::IntersectP(const Ray &r) const {
 	phi = atan2f(phit.y, phit.x);
 	if (phi < 0.) phi += 2.f*M_PI;
 	// Test sphere intersection against clipping parameters
-	if (phit.z < zmin || phit.z > zmax || phi > phiMax) {
+	if ((zmin > -radius && phit.z < zmin) || (zmax < radius && phit.z > zmax) ||
+		phi > phiMax) {
 		if (thit == t1) return false;
 		if (t1 > ray.maxt) return false;
 		thit = t1;

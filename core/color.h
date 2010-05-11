@@ -1,6 +1,6 @@
 
 /*
-    pbrt source code Copyright(c) 1998-2007 Matt Pharr and Greg Humphreys.
+    pbrt source code Copyright(c) 1998-2010 Matt Pharr and Greg Humphreys.
 
     This file is part of pbrt.
 
@@ -39,6 +39,18 @@ public:
 			c[i] = cs[i];
 		Assert(!IsNaN());
 	}
+        Spectrum(const Spectrum &s2) {
+            Assert(!s2.IsNaN());
+            for (int i = 0; i < COLOR_SAMPLES; ++i)
+                c[i] = s2.c[i];
+        }
+        Spectrum &operator=(const Spectrum &s2) {
+            Assert(!s2.IsNaN());
+            for (int i = 0; i < COLOR_SAMPLES; ++i)
+                c[i] = s2.c[i];
+            return *this;
+        }
+
 	friend ostream &operator<<(ostream &, const Spectrum &);
 	Spectrum &operator+=(const Spectrum &s2) {
 		for (int i = 0; i < COLOR_SAMPLES; ++i)
