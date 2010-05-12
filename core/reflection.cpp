@@ -164,6 +164,7 @@ Spectrum Microfacet::f(const Vector &wo,
                        const Vector &wi) const {
 	float cosThetaO = fabsf(CosTheta(wo));
 	float cosThetaI = fabsf(CosTheta(wi));
+	if (cosThetaI == 0.f || cosThetaO == 0.f) return Spectrum(0.f);
 	Vector wh = wi + wo;
 	if (wh.x == 0. && wh.y == 0. && wh.z == 0.) return Spectrum(0.f);
 	wh = Normalize(wh);
@@ -249,13 +250,14 @@ void Blinn::Sample_f(const Vector &wo, Vector *wi,
 	float sintheta = sqrtf(max(0.f, 1.f - costheta*costheta));
 	float phi = u2 * 2.f * M_PI;
 	Vector H = SphericalDirection(sintheta, costheta, phi);
-	if (!SameHemisphere(wo, H)) H.z *= -1.f;
+	if (!SameHemisphere(wo, H)) H = -H;
 	// Compute incident direction by reflecting about $\wh$
 	*wi = -wo + 2.f * Dot(wo, H) * H;
 	// Compute PDF for \wi from Blinn distribution
 	float blinn_pdf = ((exponent + 1.f) *
 	                   powf(costheta, exponent)) /
 		(2.f * M_PI * 4.f * Dot(wo, H));
+	if (Dot(wo, H) <= 0.f) blinn_pdf = 0.f;
 	*pdf = blinn_pdf;
 }
 float Blinn::Pdf(const Vector &wo, const Vector &wi) const {
@@ -265,6 +267,7 @@ float Blinn::Pdf(const Vector &wo, const Vector &wi) const {
 	float blinn_pdf = ((exponent + 1.f) *
 	                   powf(costheta, exponent)) /
 		(2.f * M_PI * 4.f * Dot(wo, H));
+	if (Dot(wo, H) <= 0.f) blinn_pdf = 0.f;
 	return blinn_pdf;
 }
 void Anisotropic::Sample_f(const Vector &wo, Vector *wi,
@@ -288,7 +291,7 @@ void Anisotropic::Sample_f(const Vector &wo, Vector *wi,
 	}
 	float sintheta = sqrtf(max(0.f, 1.f - costheta*costheta));
 	Vector H = SphericalDirection(sintheta, costheta, phi);
-	if (Dot(wo, H) < 0.f) H = -H;
+	if (!SameHemisphere(wo, H)) H = -H;
 	// Compute incident direction by reflecting about $\wh$
 	*wi = -wo + 2.f * Dot(wo, H) * H;
 	// Compute PDF for \wi from Anisotropic distribution
