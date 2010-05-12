@@ -21,24 +21,22 @@ endif
 CC=gcc
 CXX=g++
 LD=$(CXX) $(OPT)
-OPT=-O2
-# OPT=-O2 -msse -mfpmath=sse
+DEFS=-DNDEBUG
+OPT=-O2 -msse -mfpmath=sse
 INCLUDE=-I. -Icore $(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
-CXXFLAGS=$(OPT) $(INCLUDE) $(WARN)
+CXXFLAGS=$(OPT) $(INCLUDE) $(WARN) $(DEFS)
 CCFLAGS=$(CXXFLAGS)
 LIBS=$(LEXLIB) $(DLLLIB) $(EXRLIBDIR) $(EXRLIBS) -lm 
 
 SHARED_LDFLAGS = -shared
 LRT_LDFLAGS=-rdynamic $(OPT)
-#PBRTPRELINK=-Wl,--export-dynamic -Wl,-whole-archive
-#PBRTPOSTLINK=-Wl,-no-whole-archive
 
 ifeq ($(ARCH), Darwin)
   OS_VERSION = $(shell uname -r)
   SHARED_LDFLAGS = -flat_namespace -undefined suppress -bundle 
-  LRT_LDFLAGS=$(OPT) # -L/sw/lib
+  LRT_LDFLAGS=$(OPT)
   INCLUDE += -I/sw/include
   #WARN += -Wno-long-double
 endif
