@@ -22,7 +22,7 @@ CC=gcc
 CXX=g++
 LD=$(CXX) $(OPT)
 DEFS=-DNDEBUG
-OPT=-O2 -msse -mfpmath=sse
+OPT=-O2 -msse2 -mfpmath=sse
 INCLUDE=-I. -Icore $(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
