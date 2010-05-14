@@ -62,6 +62,7 @@ public:
 		      UniformSampleCone(u1, u2, cosThetaMax, wcX, wcY, wc));
 		if (!Intersect(r, &thit, &dgSphere))
 			thit = Dot(Pcenter - p, Normalize(r.d));
+		ps = r(thit);
 		*ns = Normal(Normalize(ps - Pcenter));
 		if (reverseOrientation) *ns *= -1.f;
 		return ps;
