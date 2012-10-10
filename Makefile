@@ -10,7 +10,7 @@ ifeq ($(ARCH),OpenBSD)
   DLLLIB =
 endif
 
-EXRINCLUDE=-I/usr/local/include/OpenEXR -I/opt/local/include/OpenEXR
+EXRINCLUDE=-I/usr/local/include/OpenEXR -I/opt/local/include/OpenEXR -I/usr/local/include/OpenEXR
 EXRLIBDIR=-L/usr/local/lib -L/opt/local/lib
 EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lIlmThread -lImath -lIex -lHalf -Bdynamic -lz
 ifeq ($(ARCH),Linux)
