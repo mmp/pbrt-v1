@@ -1,0 +1,8 @@
+bin/
+objs/
+core/libpbrt.a
+core/pbrtlex.cpp
+core/pbrtparse.cpp*
+core/pbrtparse.h*
+core/pbrtparse.output
+exrcheck
