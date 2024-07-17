@@ -16,7 +16,7 @@ EXRLIBS=$(EXRLIBDIR) -Bstatic -lIex -lIlmImf -lIlmThread -lImath -lIex -lHalf -B
 ifeq ($(ARCH),Linux)
   EXRLIBS += -lpthread
 endif
-
+IMATHINCLUDE=-I/usr/local/include/Imath
 
 CC=gcc
 CXX=g++
@@ -26,7 +26,7 @@ OPT=-O2 -msse2 -mfpmath=sse
 INCLUDE=-I. -Icore $(EXRINCLUDE)
 WARN=-Wall
 CWD=$(shell pwd)
-CXXFLAGS=$(OPT) $(INCLUDE) $(WARN) $(DEFS)
+CXXFLAGS=$(OPT) $(INCLUDE) $(WARN) $(DEFS) -fPIC
 CCFLAGS=$(CXXFLAGS)
 LIBS=$(LEXLIB) $(DLLLIB) $(EXRLIBDIR) $(EXRLIBS) -lm 
 
@@ -193,9 +193,8 @@ core/pbrtlex.cpp: core/pbrtlex.l
 
 core/pbrtparse.h core/pbrtparse.cpp: core/pbrtparse.y
 	@echo "YACC'ing pbrtparse.y"
-	@$(YACC) -o $@ core/pbrtparse.y
+	@$(YACC) --defines=core/pbrtparse.h -o core/pbrtparse.cpp core/pbrtparse.y
 	@if [ -e core/pbrtparse.cpp.h ]; then /bin/mv core/pbrtparse.cpp.h core/pbrtparse.h; fi
-	@if [ -e core/pbrtparse.hpp ]; then /bin/mv core/pbrtparse.hpp core/pbrtparse.h; fi
 
 $(RENDERER_BINARY): $(RENDERER_OBJS) $(CORE_LIB)
 	@echo "Linking $@"
